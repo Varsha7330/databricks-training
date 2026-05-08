@@ -114,7 +114,97 @@ select * from Employees
 order by salary DESC
 limit 1;
 
+--DISTINCT
+--Display distinct department names.
+select distinct department from Employees;
+--Display distinct city names.
+select city department from Employees;
+--Display distinct salary values.
+select distinct salary from Employees;
+--Display distinct combinations of department and city.
+select distinct department, city
+from Employees;
+--Display distinct experience values.
+select distinct experience from Employees;
 
+--COMPARISON OPERATORS
+--Find employees with salary >= 80000.
+select * from Employees where salary >= 80000;
+--Find employees with experience <= 3.
+select * from Employees where experience <= 3;
+--Find employees whose salary <> 45000.
+SELECT * FROM Employees
+WHERE salary <> 45000;
+--Find employees with salary < 50000.
+SELECT * FROM Employees
+WHERE salary < 50000;
+--Find employees with experience > 5.
+SELECT * FROM Employees
+WHERE experience > 5;
+
+--LOGICAL OPERATORS
+--Find employees from IT department AND salary greater than 70000.
+select * from Employees
+where department ='IT' and salary>70000;
+--Find employees from Hyderabad OR Bangalore.
+select * from Employees
+where city = 'Hyderabad' or city = 'Bangalore';
+--Find employees from HR department AND experience less than 3.
+select emp_name from Employees
+where department = 'HR' and experience<3;
+--Find employees with salary greater than 60000 OR experience greater than 6.
+SELECT * FROM Employees
+WHERE salary > 60000 OR experience > 6;
+--Find employees NOT from Sales department.
+select * from Employees
+where department not in ('Sales');
+
+--IN AND NOT IN
+--Find employees working in ('Hyderabad', 'Mumbai').
+select * from Employees
+where city in ('Hyderabad', 'Mumbai');
+--Find employees whose department IN ('IT', 'Finance').
+select * from Employees
+where department in ('IT', 'Finance');
+--Find employees whose city NOT IN ('Chennai', 'Pune').
+select * from Employees
+where city not in ('Chennai', 'Pune');
+--Find employees whose salary IN (45000, 75000, 91000).
+select * from Employees
+where salary in (45000, 75000, 91000);
+--Find employees whose department NOT IN ('HR', 'Sales').
+select * from Employees
+where  department NOT IN ('HR', 'Sales');
+
+
+--BETWEEN
+--Find employees with salary BETWEEN 50000 AND 80000.
+SELECT * FROM Employees
+WHERE salary BETWEEN 50000 AND 80000;
+--Find employees with experience BETWEEN 3 AND 6.
+SELECT * FROM Employees
+WHERE experience BETWEEN 3 AND 6;
+--Find employees whose emp_id BETWEEN 105 AND 112.
+SELECT * FROM Employees
+WHERE emp_id BETWEEN 105 AND 112;
+--Find employees with salary NOT BETWEEN 40000 AND 60000.
+SELECT * FROM Employees
+WHERE salary NOT BETWEEN 40000 AND 60000;
+--Find employees with experience BETWEEN 2 AND 4.
+SELECT * FROM Employees
+WHERE experience BETWEEN 2 AND 4;
+
+--LIKE OPERATOR
+--Find employees whose names start with 'R'.
+select * from Employees where emp_name like 'R%';
+--Find employees whose names end with 'a'.
+select * from Employees where emp_name like '%a';
+--Find employees whose names contain 'v'.
+select * from Employees where lower(emp_name) like '%v%';
+--Find employees whose city starts with 'B'.
+select * from Employees where lower(city) like 'b%';
+--Find employees whose department ends with 's'.
+select * from Employees where lower(department) like '%s';
 
 
 
