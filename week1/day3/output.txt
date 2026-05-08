@@ -1,1 +1,395 @@
+**Schema (MySQL v5.7)**
 
+    
+    CREATE TABLE Employees (
+        emp_id INT,
+        emp_name VARCHAR(50),
+        department VARCHAR(50),
+        salary INT,
+        city VARCHAR(50),
+        experience INT
+    );
+    
+    INSERT INTO Employees VALUES
+    (101, 'Rahul', 'IT', 75000, 'Hyderabad', 5),
+    (102, 'Anjali', 'HR', 45000, 'Chennai', 3),
+    (103, 'Kiran', 'IT', 82000, 'Bangalore', 6),
+    (104, 'Sneha', 'Finance', 67000, 'Hyderabad', 4),
+    (105, 'Aman', 'HR', 39000, 'Pune', 2),
+    (106, 'Ravi', 'Finance', 91000, 'Mumbai', 8),
+    (107, 'Divya', 'IT', 55000, 'Chennai', 3),
+    (108, 'Meena', 'Sales', 48000, 'Bangalore', 2),
+    (109, 'Arjun', 'Sales', 61000, 'Hyderabad', 5),
+    (110, 'Pooja', 'IT', 73000, 'Mumbai', 4),
+    (111, 'Vikas', 'HR', 52000, 'Pune', 3),
+    (112, 'Nisha', 'Finance', 88000, 'Bangalore', 7),
+    (113, 'Tarun', 'Sales', 46000, 'Chennai', 2),
+    (114, 'Kavya', 'IT', 97000, 'Hyderabad', 9),
+    (115, 'Manoj', 'Finance', 58000, 'Mumbai', 4);
+
+---
+
+**Query #1**
+
+    select *from Employees;
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 101    | Rahul    | IT         | 75000  | Hyderabad | 5          |
+| 102    | Anjali   | HR         | 45000  | Chennai   | 3          |
+| 103    | Kiran    | IT         | 82000  | Bangalore | 6          |
+| 104    | Sneha    | Finance    | 67000  | Hyderabad | 4          |
+| 105    | Aman     | HR         | 39000  | Pune      | 2          |
+| 106    | Ravi     | Finance    | 91000  | Mumbai    | 8          |
+| 107    | Divya    | IT         | 55000  | Chennai   | 3          |
+| 108    | Meena    | Sales      | 48000  | Bangalore | 2          |
+| 109    | Arjun    | Sales      | 61000  | Hyderabad | 5          |
+| 110    | Pooja    | IT         | 73000  | Mumbai    | 4          |
+| 111    | Vikas    | HR         | 52000  | Pune      | 3          |
+| 112    | Nisha    | Finance    | 88000  | Bangalore | 7          |
+| 113    | Tarun    | Sales      | 46000  | Chennai   | 2          |
+| 114    | Kavya    | IT         | 97000  | Hyderabad | 9          |
+| 115    | Manoj    | Finance    | 58000  | Mumbai    | 4          |
+
+---
+**Query #2**
+
+    select emp_name,salary from Employees;
+
+| emp_name | salary |
+| -------- | ------ |
+| Rahul    | 75000  |
+| Anjali   | 45000  |
+| Kiran    | 82000  |
+| Sneha    | 67000  |
+| Aman     | 39000  |
+| Ravi     | 91000  |
+| Divya    | 55000  |
+| Meena    | 48000  |
+| Arjun    | 61000  |
+| Pooja    | 73000  |
+| Vikas    | 52000  |
+| Nisha    | 88000  |
+| Tarun    | 46000  |
+| Kavya    | 97000  |
+| Manoj    | 58000  |
+
+---
+**Query #3**
+
+    select emp_name,department from Employees;
+
+| emp_name | department |
+| -------- | ---------- |
+| Rahul    | IT         |
+| Anjali   | HR         |
+| Kiran    | IT         |
+| Sneha    | Finance    |
+| Aman     | HR         |
+| Ravi     | Finance    |
+| Divya    | IT         |
+| Meena    | Sales      |
+| Arjun    | Sales      |
+| Pooja    | IT         |
+| Vikas    | HR         |
+| Nisha    | Finance    |
+| Tarun    | Sales      |
+| Kavya    | IT         |
+| Manoj    | Finance    |
+
+---
+**Query #4**
+
+    select emp_name from Employees where department='IT';
+
+| emp_name |
+| -------- |
+| Rahul    |
+| Kiran    |
+| Divya    |
+| Pooja    |
+| Kavya    |
+
+---
+**Query #5**
+
+    select emp_name, experience from Employees;
+
+| emp_name | experience |
+| -------- | ---------- |
+| Rahul    | 5          |
+| Anjali   | 3          |
+| Kiran    | 6          |
+| Sneha    | 4          |
+| Aman     | 2          |
+| Ravi     | 8          |
+| Divya    | 3          |
+| Meena    | 2          |
+| Arjun    | 5          |
+| Pooja    | 4          |
+| Vikas    | 3          |
+| Nisha    | 7          |
+| Tarun    | 2          |
+| Kavya    | 9          |
+| Manoj    | 4          |
+
+---
+**Query #6**
+
+    select emp_name from Employees where salary>70000;
+
+| emp_name |
+| -------- |
+| Rahul    |
+| Kiran    |
+| Ravi     |
+| Pooja    |
+| Nisha    |
+| Kavya    |
+
+---
+**Query #7**
+
+    select emp_name from Employees where lower(city)="hyderabad";
+
+| emp_name |
+| -------- |
+| Rahul    |
+| Sneha    |
+| Arjun    |
+| Kavya    |
+
+---
+**Query #8**
+
+    select emp_name from Employees where experience<4;
+
+| emp_name |
+| -------- |
+| Anjali   |
+| Aman     |
+| Divya    |
+| Meena    |
+| Vikas    |
+| Tarun    |
+
+---
+**Query #9**
+
+    select emp_name from Employees where lower(department)='finance';
+
+| emp_name |
+| -------- |
+| Sneha    |
+| Ravi     |
+| Nisha    |
+| Manoj    |
+
+---
+**Query #10**
+
+    select emp_name from Employees where salary= 52000;
+
+| emp_name |
+| -------- |
+| Vikas    |
+
+---
+**Query #11**
+
+    select department, sum(salary) as total_salary from Employees
+    group by department;
+
+| department | total_salary |
+| ---------- | ------------ |
+| Finance    | 304000       |
+| HR         | 136000       |
+| IT         | 382000       |
+| Sales      | 155000       |
+
+---
+**Query #12**
+
+    select department, avg(salary) as avg_salary from Employees
+    group by department;
+
+| department | avg_salary |
+| ---------- | ---------- |
+| Finance    | 76000.0    |
+| HR         | 45333.3333 |
+| IT         | 76400.0    |
+| Sales      | 51666.6667 |
+
+---
+**Query #13**
+
+    select city, count(*) from Employees
+    group by city;
+
+| city      | count(*) |
+| --------- | -------- |
+| Bangalore | 3        |
+| Chennai   | 3        |
+| Hyderabad | 4        |
+| Mumbai    | 3        |
+| Pune      | 2        |
+
+---
+**Query #14**
+
+    select department, max(salary) as max_salary from Employees
+    group by department;
+
+| department | max_salary |
+| ---------- | ---------- |
+| Finance    | 91000      |
+| HR         | 52000      |
+| IT         | 97000      |
+| Sales      | 61000      |
+
+---
+**Query #15**
+
+    select department, min(experience) as min_experience from Employees
+    group by department;
+
+| department | min_experience |
+| ---------- | -------------- |
+| Finance    | 4              |
+| HR         | 2              |
+| IT         | 3              |
+| Sales      | 2              |
+
+---
+**Query #16**
+
+    select department, count(*) as total_employees from Employees
+    group by department
+    having count(*)>3;
+
+| department | total_employees |
+| ---------- | --------------- |
+| Finance    | 4               |
+| IT         | 5               |
+
+---
+**Query #17**
+
+    select department, avg(salary) as avg_salary from Employees
+    group by department
+    having avg(salary)>60000;
+
+| department | avg_salary |
+| ---------- | ---------- |
+| Finance    | 76000.0    |
+| IT         | 76400.0    |
+
+---
+**Query #18**
+
+    SELECT city, COUNT(*) AS total_employees
+    FROM Employees
+    GROUP BY city
+    HAVING COUNT(*) > 2;
+
+| city      | total_employees |
+| --------- | --------------- |
+| Bangalore | 3               |
+| Chennai   | 3               |
+| Hyderabad | 4               |
+| Mumbai    | 3               |
+
+---
+**Query #19**
+
+    SELECT department, SUM(salary) AS total_salary
+    FROM Employees
+    GROUP BY department
+    HAVING SUM(salary) > 200000;
+
+| department | total_salary |
+| ---------- | ------------ |
+| Finance    | 304000       |
+| IT         | 382000       |
+
+---
+**Query #20**
+
+    SELECT department, MAX(salary) AS max_salary
+    FROM Employees
+    GROUP BY department
+    HAVING MAX(salary) > 90000;
+
+| department | max_salary |
+| ---------- | ---------- |
+| Finance    | 91000      |
+| IT         | 97000      |
+
+---
+**Query #21**
+
+    SELECT *
+    FROM Employees
+    ORDER BY salary DESC
+    LIMIT 5;
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 114    | Kavya    | IT         | 97000  | Hyderabad | 9          |
+| 106    | Ravi     | Finance    | 91000  | Mumbai    | 8          |
+| 112    | Nisha    | Finance    | 88000  | Bangalore | 7          |
+| 103    | Kiran    | IT         | 82000  | Bangalore | 6          |
+| 101    | Rahul    | IT         | 75000  | Hyderabad | 5          |
+
+---
+**Query #22**
+
+    select * from Employees
+    order by experience DESC
+    limit 3;
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 114    | Kavya    | IT         | 97000  | Hyderabad | 9          |
+| 106    | Ravi     | Finance    | 91000  | Mumbai    | 8          |
+| 112    | Nisha    | Finance    | 88000  | Bangalore | 7          |
+
+---
+**Query #23**
+
+    select * from Employees where department="Finance"
+    order by salary DESC
+    limit 2;
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 106    | Ravi     | Finance    | 91000  | Mumbai    | 8          |
+| 112    | Nisha    | Finance    | 88000  | Bangalore | 7          |
+
+---
+**Query #24**
+
+    select * from Employees where city= 'Hyderabad'
+    limit 4;
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 101    | Rahul    | IT         | 75000  | Hyderabad | 5          |
+| 104    | Sneha    | Finance    | 67000  | Hyderabad | 4          |
+| 109    | Arjun    | Sales      | 61000  | Hyderabad | 5          |
+| 114    | Kavya    | IT         | 97000  | Hyderabad | 9          |
+
+---
+**Query #25**
+
+    select * from Employees 
+    order by salary DESC
+    limit 1;
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 114    | Kavya    | IT         | 97000  | Hyderabad | 9          |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/f/qVahuQZtJkGAi28fZ6Bh5n/0)
