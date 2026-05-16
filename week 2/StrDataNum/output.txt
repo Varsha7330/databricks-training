@@ -279,9 +279,221 @@
 
 [View on DB Fiddle](https://www.db-fiddle.com/)
 
+**Schema (MySQL v5.7)**
+
+    CREATE TABLE product_sales (
+        product_id INT,
+        product_name VARCHAR(50),
+        mrp DECIMAL(10,2),
+        selling_price DECIMAL(10,2),
+        sale_date DATE
+    );
+    INSERT INTO product_sales VALUES
+    (1,'Laptop',75000.75,68000.50,'2025-01-10'),
+    (2,'Mobile',35000.40,33000.25,'2025-01-12'),
+    (3,'Tablet',25000.90,26000.75,'2025-01-15');
+    
+    CREATE TABLE insurance_policies (
+        policy_id INT,
+        holder_name VARCHAR(50),
+        premium_amount DECIMAL(10,2),
+        policy_start DATE,
+        policy_end DATE
+    );
+    INSERT INTO insurance_policies VALUES
+    (301,'arjun',12000.50,'2023-01-01','2026-01-01'),
+    (302,'megha',8500.75,'2022-06-15','2025-06-15'),
+    (303,'vinod',15000.90,'2021-03-01','2024-03-01');
+    
+    CREATE TABLE salary_revision (
+        emp_id INT,
+        emp_name VARCHAR(50),
+        current_salary DECIMAL(10,2),
+        rating INT,
+        last_hike DATE
+    );
+    INSERT INTO salary_revision VALUES
+    (1,'karthik',75000.75,5,'2023-01-01'),
+    (2,'veena',65000.40,4,'2024-01-01'),
+    (3,'ravi',85000.90,3,'2022-01-01');
+    
+    CREATE TABLE bank_accounts (
+        account_id INT,
+        customer_name VARCHAR(50),
+        balance DECIMAL(12,2),
+        last_transaction DATE,
+        branch VARCHAR(30)
+    );
+    INSERT INTO bank_accounts VALUES
+    (501,'ramesh',125000.75,'2024-12-20','hyderabad'),
+    (502,'sita',8500.40,'2023-06-15','delhi'),
+    (503,'manoj',-2500.90,'2025-01-05','mumbai');
+    
+    CREATE TABLE salary_audit (
+        emp_id INT,
+        emp_name VARCHAR(50),
+        salary DECIMAL(10,2),
+        tax_percent DECIMAL(5,2),
+        last_revision DATE
+    );
+    INSERT INTO salary_audit VALUES
+    (1,'karthik',75000.75,10.5,'2022-01-15'),
+    (2,'veena',65000.40,18.0,'2023-06-01'),
+    (3,'ravi',85000.90,25.0,'2020-11-20');
+    
+
+---
+
+**Query #7**
+
+    SELECT 
+        product_id,
+        CONCAT(
+            UPPER(LEFT(product_name,1)),
+            LOWER(SUBSTRING(product_name,2))
+        ) AS product_name,
+        ABS(mrp - selling_price) AS discount_amount,
+        ROUND(((mrp - selling_price) / mrp) * 100,2) AS discount_percentage,
+        DAYNAME(sale_date) AS sale_day,
+        CASE
+            WHEN selling_price < mrp
+                THEN 'Valid Discount'
+            WHEN selling_price > mrp
+                THEN 'Overpriced'
+            ELSE 'No Discount'
+        END AS discount_status
+    FROM product_sales;
+
+| product_id | product_name | discount_amount | discount_percentage | sale_day  | discount_status |
+| ---------- | ------------ | --------------- | ------------------- | --------- | --------------- |
+| 1          | Laptop       | 7000.25         | 9.33                | Friday    | Valid Discount  |
+| 2          | Mobile       | 2000.15         | 5.71                | Sunday    | Valid Discount  |
+| 3          | Tablet       | 999.85          | -4.0                | Wednesday | Overpriced      |
+
+---
+**Query #8**
+
+    SELECT 
+        policy_id,
+        UPPER(holder_name) AS holder_name,
+        TIMESTAMPDIFF(YEAR, policy_start, policy_end) AS policy_duration_years,
+        DATEDIFF(policy_end, CURDATE()) AS remaining_days,
+        ROUND(premium_amount) AS rounded_premium,
+        CASE
+            WHEN policy_end < CURDATE()
+                THEN 'Expired'
+            WHEN TIMESTAMPDIFF(YEAR, policy_start, policy_end) >= 3
+                THEN 'Long Term'
+            ELSE 'Mid Term'
+        END AS policy_status
+    FROM insurance_policies;
+
+| policy_id | holder_name | policy_duration_years | remaining_days | rounded_premium | policy_status |
+| --------- | ----------- | --------------------- | -------------- | --------------- | ------------- |
+| 301       | ARJUN       | 3                     | -135           | 12001           | Expired       |
+| 302       | MEGHA       | 3                     | -335           | 8501            | Expired       |
+| 303       | VINOD       | 3                     | -806           | 15001           | Expired       |
+
+---
+**Query #9**
+
+    SELECT 
+        emp_id,
+        LOWER(emp_name) AS employee_name,
+        TIMESTAMPDIFF(YEAR, last_hike, CURDATE()) AS years_since_hike,
+        CASE
+            WHEN rating = 5 THEN current_salary * 0.20
+            WHEN rating = 4 THEN current_salary * 0.10
+            WHEN rating = 3 THEN current_salary * 0.05
+            ELSE 0
+        END AS increment_amount,
+        ROUND(
+            current_salary +
+            CASE
+                WHEN rating = 5 THEN current_salary * 0.20
+                WHEN rating = 4 THEN current_salary * 0.10
+                WHEN rating = 3 THEN current_salary * 0.05
+                ELSE 0
+            END
+        ) AS new_salary,
+        CASE
+            WHEN rating = 5
+                THEN 'High Increment'
+            WHEN rating IN (3,4)
+                THEN 'Moderate'
+            ELSE 'No Increment'
+        END AS increment_status
+    FROM salary_revision;
+
+| emp_id | employee_name | years_since_hike | increment_amount | new_salary | increment_status |
+| ------ | ------------- | ---------------- | ---------------- | ---------- | ---------------- |
+| 1      | karthik       | 3                | 15000.15         | 90001      | High Increment   |
+| 2      | veena         | 2                | 6500.04          | 71500      | Moderate         |
+| 3      | ravi          | 4                | 4250.045         | 89251      | Moderate         |
+
+---
+**Query #10**
+
+    SELECT 
+        account_id,
+        ABS(balance) AS absolute_balance,
+        DATEDIFF(CURDATE(), last_transaction) AS days_since_transaction,
+        CONCAT(
+            UPPER(LEFT(branch,1)),
+            LOWER(SUBSTRING(branch,2))
+        ) AS branch_name,
+        SIGN(balance) AS balance_sign,
+        CASE
+            WHEN balance < 0
+                THEN 'Overdrawn'
+            WHEN DATEDIFF(CURDATE(), last_transaction) > 365
+                THEN 'Dormant'
+            ELSE 'Active'
+        END AS account_status
+    FROM bank_accounts;
+
+| account_id | absolute_balance | days_since_transaction | branch_name | balance_sign | account_status |
+| ---------- | ---------------- | ---------------------- | ----------- | ------------ | -------------- |
+| 501        | 125000.75        | 512                    | Hyderabad   | 1            | Dormant        |
+| 502        | 8500.4           | 1066                   | Delhi       | 1            | Dormant        |
+| 503        | 2500.9           | 496                    | Mumbai      | -1           | Overdrawn      |
+
+---
+--level 1:
 
 
+**Query #1**
 
+    SELECT 
+        LOWER(emp_name) AS employee_name,
+        ROUND(
+            salary - (salary * tax_percent / 100)
+        ) AS net_salary,
+        YEAR(last_revision) AS revision_year,
+        TIMESTAMPDIFF(
+            MONTH,
+            last_revision,
+            CURDATE()
+        ) AS months_since_revision,
+        CASE
+            WHEN tax_percent > 20
+                 AND TIMESTAMPDIFF(MONTH, last_revision, CURDATE()) > 24
+                THEN 'Flag Tax Shock'
+            WHEN tax_percent BETWEEN 15 AND 20
+                THEN 'Flag Review Needed'
+            ELSE 'Stable'
+        END AS tax_status
+    FROM salary_audit;
+
+| employee_name | net_salary | revision_year | months_since_revision | tax_status         |
+| ------------- | ---------- | ------------- | --------------------- | ------------------ |
+| karthik       | 67126      | 2022          | 52                    | Stable             |
+| veena         | 53300      | 2023          | 35                    | Flag Review Needed |
+| ravi          | 63751      | 2020          | 65                    | Flag Tax Shock     |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/)
 
 
 
