@@ -1,5 +1,5 @@
 
---NUMBER 1
+--NUMBER 1:Employee Compensation Classification
 CREATE TABLE employee_payments (
     emp_id INT PRIMARY KEY,
     emp_name VARCHAR(50),
@@ -55,7 +55,7 @@ SELECT
 FROM employee_payments;
 
 
---NUMBER 2
+--NUMBER 2: Order Delivery Delay Analysis
 CREATE TABLE orders_delivery (
 order_id INT,
 customer_name VARCHAR(50),
@@ -96,6 +96,47 @@ select
         else 'normal'
     end as delivery_status
 from orders_delivery;
+
+--NUMBER 3: Customer Spending Pattern
+CREATE TABLE customer_spending (
+    cust_id INT,
+    cust_name VARCHAR(50),
+    city VARCHAR(30),
+    purchase_amount DECIMAL(10,2),
+    purchase_date DATE
+);
+INSERT INTO customer_spending VALUES
+(1,'amit','mumbai',12000.75,'2024-12-01'),
+(2,'neha','delhi',8500.40,'2024-12-15'),
+(3,'rohit','mumbai',15500.90,'2024-11-20'),
+(4,'kavya','chennai',6000.10,'2024-10-05');
+
+--Display:
+--· Customer name with first letter capitalized
+--· Month name of purchase
+--· Rounded purchase amount
+--· Absolute value of purchase (defensive logic)
+--· CASE:
+--o High spender > 15000
+--o Medium 8000–15000
+--o Low otherwise
+SELECT 
+    CONCAT(
+        UPPER(LEFT(cust_name,1)),
+        LOWER(SUBSTRING(cust_name,2))
+    ) AS customer_name,
+    MONTHNAME(purchase_date) AS purchase_month,
+    ROUND(purchase_amount) AS rounded_amount,
+    ABS(purchase_amount) AS absolute_amount,
+    CASE
+        WHEN purchase_amount > 15000
+            THEN 'High spender'
+        WHEN purchase_amount BETWEEN 8000 AND 15000
+            THEN 'Medium'
+        ELSE 'Low'
+    END AS spender_category
+FROM customer_spending;
+
 
 
 		
