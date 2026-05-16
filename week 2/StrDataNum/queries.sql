@@ -252,6 +252,214 @@ SELECT
     END AS attendance_status
 FROM attendance;
 
-		
 
+--NUMBER 7: Product Discount Validation
+CREATE TABLE product_sales (
+    product_id INT,
+    product_name VARCHAR(50),
+    mrp DECIMAL(10,2),
+    selling_price DECIMAL(10,2),
+    sale_date DATE
+);
+INSERT INTO product_sales VALUES
+(1,'Laptop',75000.75,68000.50,'2025-01-10'),
+(2,'Mobile',35000.40,33000.25,'2025-01-12'),
+(3,'Tablet',25000.90,26000.75,'2025-01-15');
+--QUESTION
+--For each product:
+--Calculate discount amount (absolute)
+--Calculate discount percentage
+--Display day name of sale
+--Convert product name to proper case
+--Use CASE:
+--Valid Discount
+--Overpriced
+--No Discount
+SELECT 
+    product_id,
+    CONCAT(
+        UPPER(LEFT(product_name,1)),
+        LOWER(SUBSTRING(product_name,2))
+    ) AS product_name,
+    ABS(mrp - selling_price) AS discount_amount,
+    ROUND(((mrp - selling_price) / mrp) * 100,2) AS discount_percentage,
+    DAYNAME(sale_date) AS sale_day,
+    CASE
+        WHEN selling_price < mrp
+            THEN 'Valid Discount'
+        WHEN selling_price > mrp
+            THEN 'Overpriced'
+        ELSE 'No Discount'
+    END AS discount_status
+FROM product_sales;
+
+--QUESTION 8: Insurance Policy Aging
+CREATE TABLE insurance_policies (
+    policy_id INT,
+    holder_name VARCHAR(50),
+    premium_amount DECIMAL(10,2),
+    policy_start DATE,
+    policy_end DATE
+);
+INSERT INTO insurance_policies VALUES
+(301,'arjun',12000.50,'2023-01-01','2026-01-01'),
+(302,'megha',8500.75,'2022-06-15','2025-06-15'),
+(303,'vinod',15000.90,'2021-03-01','2024-03-01');
+-- For each policy:
+-- Calculate policy duration in years
+-- Find remaining days
+-- Round premium amount
+-- Convert holder name to uppercase
+-- Use CASE:
+-- Long Term
+-- Mid Term
+-- Expired
+SELECT 
+    policy_id,
+    UPPER(holder_name) AS holder_name,
+    TIMESTAMPDIFF(YEAR, policy_start, policy_end) AS policy_duration_years,
+    DATEDIFF(policy_end, CURDATE()) AS remaining_days,
+    ROUND(premium_amount) AS rounded_premium,
+    CASE
+        WHEN policy_end < CURDATE()
+            THEN 'Expired'
+        WHEN TIMESTAMPDIFF(YEAR, policy_start, policy_end) >= 3
+            THEN 'Long Term'
+        ELSE 'Mid Term'
+    END AS policy_status
+FROM insurance_policies;
+
+--NUMBER 9: Salary Increment Simulation
+CREATE TABLE salary_revision (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    current_salary DECIMAL(10,2),
+    rating INT,
+    last_hike DATE
+);
+INSERT INTO salary_revision VALUES
+(1,'karthik',75000.75,5,'2023-01-01'),
+(2,'veena',65000.40,4,'2024-01-01'),
+(3,'ravi',85000.90,3,'2022-01-01');
+-- Question
+-- For each employee:
+-- Calculate years since last hike
+-- Calculate increment using rating logic
+-- Calculate new salary (rounded)
+-- Convert employee name to lowercase
+-- Use CASE:
+-- High Increment
+-- Moderate
+-- No Increment
+SELECT 
+    emp_id,
+    LOWER(emp_name) AS employee_name,
+    TIMESTAMPDIFF(YEAR, last_hike, CURDATE()) AS years_since_hike,
+    CASE
+        WHEN rating = 5 THEN current_salary * 0.20
+        WHEN rating = 4 THEN current_salary * 0.10
+        WHEN rating = 3 THEN current_salary * 0.05
+        ELSE 0
+    END AS increment_amount,
+    ROUND(
+        current_salary +
+        CASE
+            WHEN rating = 5 THEN current_salary * 0.20
+            WHEN rating = 4 THEN current_salary * 0.10
+            WHEN rating = 3 THEN current_salary * 0.05
+            ELSE 0
+        END
+    ) AS new_salary,
+    CASE
+        WHEN rating = 5
+            THEN 'High Increment'
+        WHEN rating IN (3,4)
+            THEN 'Moderate'
+        ELSE 'No Increment'
+    END AS increment_status
+FROM salary_revision;
+
+-- NUMBER 10: Customer Account Status Evaluation
+CREATE TABLE bank_accounts (
+    account_id INT,
+    customer_name VARCHAR(50),
+    balance DECIMAL(12,2),
+    last_transaction DATE,
+    branch VARCHAR(30)
+);
+INSERT INTO bank_accounts VALUES
+(501,'ramesh',125000.75,'2024-12-20','hyderabad'),
+(502,'sita',8500.40,'2023-06-15','delhi'),
+(503,'manoj',-2500.90,'2025-01-05','mumbai');
+
+-- Question
+-- For each account:
+-- Find absolute balance
+-- Calculate days since last transaction
+-- Convert branch name to proper case
+-- Find sign of balance
+-- Use CASE:
+-- Active
+-- Dormant
+-- Overdrawn
+SELECT 
+    account_id,
+    ABS(balance) AS absolute_balance,
+    DATEDIFF(CURDATE(), last_transaction) AS days_since_transaction,
+    CONCAT(
+        UPPER(LEFT(branch,1)),
+        LOWER(SUBSTRING(branch,2))
+    ) AS branch_name,
+    SIGN(balance) AS balance_sign,
+    CASE
+        WHEN balance < 0
+            THEN 'Overdrawn'
+        WHEN DATEDIFF(CURDATE(), last_transaction) > 365
+            THEN 'Dormant'
+        ELSE 'Active'
+    END AS account_status
+FROM bank_accounts;
+
+-- NUMBER 11: Salary Risk Flagging Based on Tax Shock
+CREATE TABLE salary_audit (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    salary DECIMAL(10,2),
+    tax_percent DECIMAL(5,2),
+    last_revision DATE
+);
+INSERT INTO salary_audit VALUES
+(1,'karthik',75000.75,10.5,'2022-01-15'),
+(2,'veena',65000.40,18.0,'2023-06-01'),
+(3,'ravi',85000.90,25.0,'2020-11-20');
+-- Question
+-- For each employee:
+-- Convert employee name to lowercase
+-- Calculate net salary after tax and round it
+-- Extract revision year
+-- Find months since revision
+-- Use CASE:
+-- Flag Tax Shock
+-- Flag Review Needed
+-- Stable
+SELECT 
+    LOWER(emp_name) AS employee_name,
+    ROUND(
+        salary - (salary * tax_percent / 100)
+    ) AS net_salary,
+    YEAR(last_revision) AS revision_year,
+    TIMESTAMPDIFF(
+        MONTH,
+        last_revision,
+        CURDATE()
+    ) AS months_since_revision,
+    CASE
+        WHEN tax_percent > 20
+             AND TIMESTAMPDIFF(MONTH, last_revision, CURDATE()) > 24
+            THEN 'Flag Tax Shock'
+        WHEN tax_percent BETWEEN 15 AND 20
+            THEN 'Flag Review Needed'
+        ELSE 'Stable'
+    END AS tax_status
+FROM salary_audit;
 
