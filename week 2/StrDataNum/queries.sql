@@ -420,7 +420,9 @@ SELECT
     END AS account_status
 FROM bank_accounts;
 
--- NUMBER 11: Salary Risk Flagging Based on Tax Shock
+
+--LEVEL 1
+-- NUMBER 1: Salary Risk Flagging Based on Tax Shock
 CREATE TABLE salary_audit (
     emp_id INT,
     emp_name VARCHAR(50),
@@ -462,4 +464,779 @@ SELECT
         ELSE 'Stable'
     END AS tax_status
 FROM salary_audit;
+
+-- NUMBER 2: Bonus Abuse Detection
+CREATE TABLE bonus_monitor (
+    emp_code INT,
+    emp_name VARCHAR(50),
+    base_salary DECIMAL(10,2),
+    bonus DECIMAL(10,2),
+    bonus_date DATE
+);
+INSERT INTO bonus_monitor VALUES
+(101,'Anil',70000.10,30000.00,'2025-01-10'),
+(102,'Suresh',60000.55,3000.30,'2024-03-15'),
+(103,'Ravi',85000.90,15000.75,'2023-12-01');
+-- Question
+-- For each record:
+-- Convert employee name to proper case
+-- Calculate bonus percentage of salary
+-- Extract day name of bonus date
+-- Find absolute difference between salary and bonus
+-- Use CASE:
+-- Suspicious
+-- Normal
+-- Audit
+SELECT 
+    emp_code,
+    CONCAT(
+        UPPER(LEFT(emp_name,1)),
+        LOWER(SUBSTRING(emp_name,2))
+    ) AS employee_name,
+    ROUND((bonus / base_salary) * 100,2) AS bonus_percentage,
+    DAYNAME(bonus_date) AS bonus_day,
+    ABS(base_salary - bonus) AS difference_amount,
+    CASE
+        WHEN ((bonus / base_salary) * 100) > 30
+             AND DAYNAME(bonus_date) IN ('Saturday','Sunday')
+            THEN 'Suspicious'
+        WHEN ((bonus / base_salary) * 100) <= 20
+            THEN 'Normal'
+        ELSE 'Audit'
+    END AS bonus_status
+FROM bonus_monitor;
+
+
+-- NUMBER  3: Experience Parity Validation
+CREATE TABLE employee_experience (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    joining_date DATE,
+    declared_experience INT,
+    salary DECIMAL(10,2)
+);
+INSERT INTO employee_experience VALUES
+(1,'Veena','2018-07-01',4,65000.40),
+(2,'Ravi','2014-01-10',12,85000.90),
+(3,'Anil','2020-09-01',3,70000.10);
+
+-- Question
+-- For each employee:
+-- Convert employee name to uppercase
+-- Calculate actual experience from joining date
+-- Find difference between declared and actual experience
+-- Floor salary
+-- Use CASE:
+-- Overstated
+-- Understated
+-- Matched
+SELECT 
+    emp_id,
+    UPPER(emp_name) AS employee_name,
+    TIMESTAMPDIFF(
+        YEAR,
+        joining_date,
+        CURDATE()
+    ) AS actual_experience,
+    ABS(
+        declared_experience -
+        TIMESTAMPDIFF(YEAR, joining_date, CURDATE())
+    ) AS experience_difference,
+    FLOOR(salary) AS floor_salary,
+    CASE
+        WHEN declared_experience >
+             TIMESTAMPDIFF(YEAR, joining_date, CURDATE())
+            THEN 'Overstated'
+        WHEN declared_experience <
+             TIMESTAMPDIFF(YEAR, joining_date, CURDATE())
+            THEN 'Understated'
+        ELSE 'Matched'
+    END AS experience_status
+FROM employee_experience;
+
+
+-- NUMBER 4: Salary Digit Pattern Analysis
+CREATE TABLE salary_digits (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    salary DECIMAL(10,2),
+    credit_date DATE
+);
+INSERT INTO salary_digits VALUES
+(1,'Karthik',75000.75,'2025-01-01'),
+(2,'Veena',65000.40,'2025-01-02'),
+(3,'Suresh',60000.55,'2025-01-03');
+-- Question
+-- For each employee:
+-- Extract last two characters of name
+-- Get day of month from credit date
+-- Truncate salary to integer
+-- Apply MOD on salary
+-- Use CASE:
+-- Pattern Match
+-- No Match
+SELECT 
+    emp_id,
+    RIGHT(emp_name,2) AS last_two_characters,
+    DAY(credit_date) AS credit_day,
+    TRUNCATE(salary,0) AS truncated_salary,
+    MOD(TRUNCATE(salary,0),10) AS salary_mod,
+    CASE
+        WHEN MOD(TRUNCATE(salary,0),10) =
+             DAY(credit_date)
+            THEN 'Pattern Match'
+        ELSE 'No Match'
+    END AS pattern_status
+FROM salary_digits;
+
+
+-- NUMBER 5: Odd–Even Salary Compliance
+CREATE TABLE payroll_control (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    salary DECIMAL(10,2),
+    payment_date DATE
+);
+INSERT INTO payroll_control VALUES
+(1,'Ravi',85000.90,'2025-01-15'),
+(2,'Anil',70000.10,'2025-01-16'),
+(3,'Veena',65000.40,'2025-01-17');
+-- Question
+-- For each employee:
+-- Convert employee name to lowercase
+-- Extract weekday name
+-- Round salary
+-- Apply MOD on salary
+-- Use CASE:
+-- Violation
+-- Compliant
+SELECT 
+    emp_id,
+    LOWER(emp_name) AS employee_name,
+    DAYNAME(payment_date) AS weekday_name,
+    ROUND(salary) AS rounded_salary,
+    MOD(ROUND(salary),2) AS salary_mod,
+    CASE
+        WHEN MOD(ROUND(salary),2) = 0
+             AND MOD(DAY(payment_date),2) = 1
+            THEN 'Violation'
+        ELSE 'Compliant'
+    END AS compliance_status
+FROM payroll_control;
+
+
+-- NUMBER 6: Salary Inflation Drift
+CREATE TABLE inflation_watch (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    salary DECIMAL(10,2),
+    last_hike DATE
+);
+INSERT INTO inflation_watch VALUES
+(1,'Karthik',75000.75,'2019-01-01'),
+(2,'Veena',65000.40,'2022-01-01'),
+(3,'Ravi',85000.90,'2017-01-01');
+-- Question
+-- For each employee:
+-- Convert employee name to proper case
+-- Calculate years since last hike
+-- Apply POWER on years
+-- Round salary impact
+-- Use CASE:
+-- High Inflation Risk
+-- Moderate
+-- Low
+SELECT 
+    emp_id,
+    CONCAT(
+        UPPER(LEFT(emp_name,1)),
+        LOWER(SUBSTRING(emp_name,2))
+    ) AS employee_name,
+    TIMESTAMPDIFF(
+        YEAR,
+        last_hike,
+        CURDATE()
+    ) AS years_since_hike,
+
+    POWER(
+        TIMESTAMPDIFF(YEAR,last_hike,CURDATE()),
+        2
+    ) AS power_value,
+    ROUND(
+        salary * POWER(
+            1.05,
+            TIMESTAMPDIFF(YEAR,last_hike,CURDATE())
+        )
+    ) AS salary_impact,
+    CASE
+        WHEN TIMESTAMPDIFF(YEAR,last_hike,CURDATE()) > 5
+            THEN 'High Inflation Risk'
+        WHEN TIMESTAMPDIFF(YEAR,last_hike,CURDATE()) BETWEEN 3 AND 5
+            THEN 'Moderate'
+        ELSE 'Low'
+    END AS inflation_status
+FROM inflation_watch;
+
+
+-- NUMBER 7: Salary Sign Integrity Check
+CREATE TABLE salary_integrity (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    salary DECIMAL(10,2),
+    record_date DATE
+);
+INSERT INTO salary_integrity VALUES
+(1,'Anil',-70000.10,'2025-01-10'),
+(2,'Veena',65000.40,'2025-01-10'),
+(3,'Ravi',0.00,'2025-01-10');
+-- Question
+-- For each employee:
+-- Convert employee name to uppercase
+-- Extract year from record date
+-- Apply SIGN on salary
+-- Find absolute salary
+-- Use CASE:
+-- Negative Error
+-- Zero Salary
+-- Valid
+SELECT 
+    emp_id,
+    UPPER(emp_name) AS employee_name,
+    YEAR(record_date) AS record_year,
+    SIGN(salary) AS salary_sign,
+    ABS(salary) AS absolute_salary,
+    CASE
+        WHEN salary < 0
+            THEN 'Negative Error'
+        WHEN salary = 0
+            THEN 'Zero Salary'
+        ELSE 'Valid'
+    END AS salary_status
+FROM salary_integrity;
+
+
+-- NUMBER 8: Name Length vs Salary Correlation
+CREATE TABLE name_salary (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    salary DECIMAL(10,2),
+    join_date DATE
+);
+INSERT INTO name_salary VALUES
+(1,'Karthik',75000.75,'2019-03-15'),
+(2,'Veena',65000.40,'2021-06-20'),
+(3,'Ravi',85000.90,'2016-01-10');
+-- Question
+-- For each employee:
+-- Calculate employee name length
+-- Calculate years of service
+-- Round salary
+-- Compare name length vs years
+-- Use CASE:
+-- Name Bias
+-- Neutral
+SELECT 
+    emp_id,
+    LENGTH(emp_name) AS name_length,
+    TIMESTAMPDIFF(
+        YEAR,
+        join_date,
+        CURDATE()
+    ) AS years_of_service,
+    ROUND(salary) AS rounded_salary,
+    CASE
+        WHEN LENGTH(emp_name) >
+             TIMESTAMPDIFF(YEAR,join_date,CURDATE())
+            THEN 'Name Bias'
+        ELSE 'Neutral'
+    END AS comparison_status
+FROM name_salary;
+
+
+
+-- NUMBER 9: Salary Spike Detection by Month
+CREATE TABLE salary_monthly (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    salary DECIMAL(10,2),
+    paid_date DATE
+);
+INSERT INTO salary_monthly VALUES
+(1,'Karthik',75000.75,'2025-01-31'),
+(2,'Veena',65000.40,'2025-02-28'),
+(3,'Ravi',85000.90,'2025-03-31');
+-- Question
+-- For each record:
+-- Extract month name
+-- Apply CEIL on salary
+-- Check last day of month
+-- Use CASE:
+-- End Month Spike
+-- Regular
+SELECT 
+    emp_id,
+    MONTHNAME(paid_date) AS month_name,
+    CEIL(salary) AS ceil_salary,
+    LAST_DAY(paid_date) AS last_day_of_month,
+    CASE
+        WHEN paid_date = LAST_DAY(paid_date)
+            THEN 'End Month Spike'
+        ELSE 'Regular'
+    END AS spike_status
+FROM salary_monthly;
+
+
+-- NUMBER 10: Salary Digit Sum Audit
+CREATE TABLE digit_audit (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    salary DECIMAL(10,2),
+    audit_date DATE
+);
+INSERT INTO digit_audit VALUES
+(1,'Anil',70000.10,'2025-01-01'),
+(2,'Veena',65000.40,'2025-01-02');
+-- Question
+-- For each employee:
+-- Extract first character of employee name
+-- Truncate salary
+-- Sum salary digits logically
+-- Extract day from audit date
+-- Use CASE:
+-- Digit Alert
+-- Normal
+SELECT 
+
+    emp_id,
+
+    LEFT(emp_name,1) AS first_character,
+
+    TRUNCATE(salary,0) AS truncated_salary,
+
+    (
+        FLOOR(TRUNCATE(salary,0)/10000) +
+        FLOOR((TRUNCATE(salary,0)%10000)/1000) +
+        FLOOR((TRUNCATE(salary,0)%1000)/100) +
+        FLOOR((TRUNCATE(salary,0)%100)/10) +
+        (TRUNCATE(salary,0)%10)
+    ) AS digit_sum,
+
+    DAY(audit_date) AS audit_day,
+
+    CASE
+        WHEN (
+            FLOOR(TRUNCATE(salary,0)/10000) +
+            FLOOR((TRUNCATE(salary,0)%10000)/1000) +
+            FLOOR((TRUNCATE(salary,0)%1000)/100) +
+            FLOOR((TRUNCATE(salary,0)%100)/10) +
+            (TRUNCATE(salary,0)%10)
+        ) > 20
+            THEN 'Digit Alert'
+
+        ELSE 'Normal'
+    END AS audit_status
+
+FROM digit_audit;
+
+-- NUMBER 11: Weekend Salary Credit Fraud Detection
+CREATE TABLE salary_credit_audit (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    salary DECIMAL(10,2),
+    credit_date DATE,
+    bank_code VARCHAR(10)
+);
+INSERT INTO salary_credit_audit VALUES
+(1,'Karthik',75000.75,'2025-01-04','HDFC01'),
+(2,'Veena',65000.40,'2025-01-06','ICIC02'),
+(3,'Ravi',85000.90,'2025-01-05','SBIN03'),
+(4,'Anil',70000.10,'2025-01-07','AXIS04'),
+(5,'Suresh',60000.55,'2025-01-11','HDFC01');
+-- Question
+-- For each record:
+-- Extract bank prefix from bank code
+-- Identify weekday name of credit date
+-- Round salary
+-- Apply MOD on salary
+-- Use CASE:
+-- Weekend Fraud
+-- Bank Review
+-- Normal
+SELECT 
+
+    emp_id,
+
+    LEFT(bank_code,4) AS bank_prefix,
+
+    DAYNAME(credit_date) AS weekday_name,
+
+    ROUND(salary) AS rounded_salary,
+
+    MOD(ROUND(salary),5) AS salary_mod,
+
+    CASE
+        WHEN DAYNAME(credit_date) IN ('Saturday','Sunday')
+             AND MOD(ROUND(salary),5)=0
+            THEN 'Weekend Fraud'
+
+        WHEN LEFT(bank_code,4)='HDFC'
+            THEN 'Bank Review'
+
+        ELSE 'Normal'
+    END AS fraud_status
+FROM salary_credit_audit;
+
+
+-- NUMBER 12: Salary Credit Time Drift Analysis
+CREATE TABLE salary_time_drift (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    salary DECIMAL(10,2),
+    credit_ts DATETIME
+);
+INSERT INTO salary_time_drift VALUES
+(1,'Karthik',75000.75,'2025-01-10 23:45:00'),
+(2,'Veena',65000.40,'2025-01-10 09:15:00'),
+(3,'Ravi',85000.90,'2025-01-11 00:10:00'),
+(4,'Anil',70000.10,'2025-01-09 18:30:00'),
+(5,'Suresh',60000.55,'2025-01-10 02:50:00');
+
+-- Question
+-- For each employee:
+-- Extract hour from credit timestamp
+-- Convert employee name to lowercase
+-- Floor salary
+-- Calculate difference between salary and hour
+-- Use CASE:
+-- Midnight Drift
+-- After Hours
+-- Business Hours
+SELECT 
+
+    emp_id,
+
+    HOUR(credit_ts) AS credit_hour,
+
+    LOWER(emp_name) AS employee_name,
+
+    FLOOR(salary) AS floor_salary,
+
+    ABS(
+        FLOOR(salary) - HOUR(credit_ts)
+    ) AS difference_value,
+
+    CASE
+        WHEN HOUR(credit_ts) BETWEEN 0 AND 3
+            THEN 'Midnight Drift'
+
+        WHEN HOUR(credit_ts) > 18
+            THEN 'After Hours'
+
+        ELSE 'Business Hours'
+    END AS drift_status
+
+FROM salary_time_drift;
+
+
+-- NUMBER 13: Salary Decimal Precision Audit
+CREATE TABLE salary_precision (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    salary DECIMAL(10,4),
+    record_date DATE
+);
+INSERT INTO salary_precision VALUES
+(1,'Karthik',75000.7567,'2025-01-01'),
+(2,'Veena',65000.4044,'2025-01-02'),
+(3,'Ravi',85000.9099,'2025-01-03'),
+(4,'Anil',70000.1001,'2025-01-04'),
+(5,'Suresh',60000.5555,'2025-01-05');
+-- Question
+-- For each record:
+-- Truncate salary to 2 decimals
+-- Calculate difference between rounded and truncated value
+-- Extract day name
+-- Get length of employee name
+-- Use CASE:
+-- Precision Loss
+-- Safe
+SELECT emp_id,
+TRUNCATE(salary,2) AS truncated_salary,
+ROUND(salary,2)-TRUNCATE(salary,2) AS difference_value,
+DAYNAME(record_date) AS day_name,
+LENGTH(emp_name) AS name_length,
+CASE
+WHEN ROUND(salary,2)-TRUNCATE(salary,2)>0.01 THEN 'Precision Loss'
+ELSE 'Safe'
+END AS precision_status
+FROM salary_precision;
+
+
+-- NUMBER 14: Salary Growth Power Index
+CREATE TABLE salary_growth (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    base_salary DECIMAL(10,2),
+    growth_rate DECIMAL(5,2),
+    last_hike DATE
+);
+INSERT INTO salary_growth VALUES
+(1,'Karthik',75000.75,1.08,'2019-01-01'),
+(2,'Veena',65000.40,1.05,'2021-01-01'),
+(3,'Ravi',85000.90,1.12,'2017-01-01'),
+(4,'Anil',70000.10,1.03,'2022-01-01'),
+(5,'Suresh',60000.55,1.06,'2020-01-01');
+-- Question
+-- For each employee:
+-- Calculate years since last hike
+-- Apply POWER using growth rate and years
+-- Round projected salary
+-- Convert employee name to uppercase
+-- Use CASE:
+-- Explosive Growth
+-- Controlled
+-- Stagnant
+SELECT emp_id,
+TIMESTAMPDIFF(YEAR,last_hike,CURDATE()) AS years_since_hike,
+POWER(growth_rate,TIMESTAMPDIFF(YEAR,last_hike,CURDATE())) AS growth_power,
+ROUND(base_salary*POWER(growth_rate,TIMESTAMPDIFF(YEAR,last_hike,CURDATE()))) AS projected_salary,
+UPPER(emp_name) AS employee_name,
+CASE
+WHEN ROUND(base_salary*POWER(growth_rate,TIMESTAMPDIFF(YEAR,last_hike,CURDATE())))>150000 THEN 'Explosive Growth'
+WHEN ROUND(base_salary*POWER(growth_rate,TIMESTAMPDIFF(YEAR,last_hike,CURDATE())))>100000 THEN 'Controlled'
+ELSE 'Stagnant'
+END AS growth_status
+FROM salary_growth;
+
+-- NUMBER 15: Salary Symmetry Check
+CREATE TABLE salary_symmetry (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    salary DECIMAL(10,2),
+    processed_date DATE
+);
+
+INSERT INTO salary_symmetry VALUES
+(1,'Karthik',75557.75,'2025-01-15'),
+(2,'Veena',64446.40,'2025-01-16'),
+(3,'Ravi',85858.90,'2025-01-17'),
+(4,'Anil',70007.10,'2025-01-18'),
+(5,'Suresh',60000.55,'2025-01-19');
+-- Question
+-- For each record:
+-- Remove decimals from salary
+-- Reverse salary digits
+-- Extract weekday
+-- Convert employee name to proper case
+-- Use CASE:
+-- Symmetric Pay
+-- Asymmetric
+SELECT emp_id,
+REPLACE(TRUNCATE(salary,0),'.','') AS salary_without_decimal,
+REVERSE(TRUNCATE(salary,0)) AS reversed_salary,
+DAYNAME(processed_date) AS weekday_name,
+CONCAT(UPPER(LEFT(emp_name,1)),LOWER(SUBSTRING(emp_name,2))) AS employee_name,
+CASE
+WHEN TRUNCATE(salary,0)=REVERSE(TRUNCATE(salary,0)) THEN 'Symmetric Pay'
+ELSE 'Asymmetric'
+END AS symmetry_status
+FROM salary_symmetry;
+
+
+-- NUMBER 16: Leap Year Salary Adjustment Audit
+CREATE TABLE leap_salary (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    salary DECIMAL(10,2),
+    credit_date DATE
+);
+
+INSERT INTO leap_salary VALUES
+(1,'Karthik',75000.75,'2024-02-29'),
+(2,'Veena',65000.40,'2025-02-28'),
+(3,'Ravi',85000.90,'2020-02-29'),
+(4,'Anil',70000.10,'2023-02-28'),
+(5,'Suresh',60000.55,'2024-02-28');
+-- Question
+-- For each employee:
+-- Extract year
+-- Check leap year logic
+-- Apply CEIL on salary
+-- Calculate day of year
+-- Use CASE:
+-- Leap Credit
+-- Non-Leap Credit
+SELECT emp_id,
+YEAR(credit_date) AS credit_year,
+CASE
+WHEN (YEAR(credit_date)%4=0 AND YEAR(credit_date)%100!=0)
+OR YEAR(credit_date)%400=0 THEN 'Leap Year'
+ELSE 'Non Leap Year'
+END AS leap_year_check,
+CEIL(salary) AS ceil_salary,
+DAYOFYEAR(credit_date) AS day_of_year,
+CASE
+WHEN MONTH(credit_date)=2 AND DAY(credit_date)=29 THEN 'Leap Credit'
+ELSE 'Non-Leap Credit'
+END AS credit_status
+FROM leap_salary;
+
+
+-- NUMBER 17: Fiscal Year Boundary Salary Check
+CREATE TABLE fiscal_salary (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    salary DECIMAL(10,2),
+    credit_date DATE
+);
+
+INSERT INTO fiscal_salary VALUES
+(1,'Karthik',75000.75,'2025-03-31'),
+(2,'Veena',65000.40,'2025-04-01'),
+(3,'Ravi',85000.90,'2024-03-30'),
+(4,'Anil',70000.10,'2024-04-02'),
+(5,'Suresh',60000.55,'2025-03-29');
+-- Question
+-- For each record:
+-- Determine fiscal year
+-- Extract month
+-- Format salary
+-- Convert employee name to lowercase
+-- Use CASE:
+-- Year End Credit
+-- Year Start Credit
+-- Mid Year
+SELECT emp_id,
+CASE
+WHEN MONTH(credit_date)>=4 THEN CONCAT(YEAR(credit_date),'-',YEAR(credit_date)+1)
+ELSE CONCAT(YEAR(credit_date)-1,'-',YEAR(credit_date))
+END AS fiscal_year,
+MONTHNAME(credit_date) AS month_name,
+FORMAT(salary,2) AS formatted_salary,
+LOWER(emp_name) AS employee_name,
+CASE
+WHEN MONTH(credit_date)=3 THEN 'Year End Credit'
+WHEN MONTH(credit_date)=4 THEN 'Year Start Credit'
+ELSE 'Mid Year'
+END AS fiscal_status
+FROM fiscal_salary;
+
+
+-- NUMBER 18: Salary Random Sampling for Audit
+CREATE TABLE salary_sampling (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    salary DECIMAL(10,2),
+    record_date DATE
+);
+
+INSERT INTO salary_sampling VALUES
+(1,'Karthik',75000.75,'2025-01-01'),
+(2,'Veena',65000.40,'2025-01-02'),
+(3,'Ravi',85000.90,'2025-01-03'),
+(4,'Anil',70000.10,'2025-01-04'),
+(5,'Suresh',60000.55,'2025-01-05'),
+(6,'Amit',72000.60,'2025-01-06'),
+(7,'Neha',68000.80,'2025-01-07');
+-- Question
+-- For each record:
+-- Generate random value
+-- Round salary
+-- Extract day name
+-- Extract first character of employee name
+-- Use CASE:
+-- Sampled
+-- Skipped
+SELECT emp_id,
+RAND() AS random_value,
+ROUND(salary) AS rounded_salary,
+DAYNAME(record_date) AS day_name,
+LEFT(emp_name,1) AS first_character,
+CASE
+WHEN RAND()>0.7 THEN 'Sampled'
+ELSE 'Skipped'
+END AS sample_status
+FROM salary_sampling;
+
+
+-- NUMBER 19: Salary ASCII Integrity Check
+CREATE TABLE salary_ascii (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    salary DECIMAL(10,2),
+    join_date DATE
+);
+
+INSERT INTO salary_ascii VALUES
+(1,'Karthik',75000.75,'2019-03-15'),
+(2,'Veena',65000.40,'2021-06-20'),
+(3,'Ravi',85000.90,'2016-01-10'),
+(4,'Anil',70000.10,'2020-09-01'),
+(5,'Suresh',60000.55,'2022-11-25');
+-- Question
+-- For each employee:
+-- Extract ASCII value of first character
+-- Calculate years since joining
+-- Floor salary
+-- Compare ASCII vs years
+-- Use CASE:
+-- Name Dominates
+-- Experience Dominates
+SELECT emp_id,
+ASCII(LEFT(emp_name,1)) AS ascii_value,
+TIMESTAMPDIFF(YEAR,join_date,CURDATE()) AS years_since_joining,
+FLOOR(salary) AS floor_salary,
+CASE
+WHEN ASCII(LEFT(emp_name,1))>TIMESTAMPDIFF(YEAR,join_date,CURDATE()) THEN 'Name Dominates'
+ELSE 'Experience Dominates'
+END AS comparison_status
+FROM salary_ascii;
+
+
+-- NUMBER 20: Salary vs Calendar Symmetry Logic
+CREATE TABLE salary_calendar (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    salary DECIMAL(10,2),
+    credit_date DATE
+);
+
+INSERT INTO salary_calendar VALUES
+(1,'Karthik',75000.75,'2025-01-15'),
+(2,'Veena',65000.40,'2025-02-14'),
+(3,'Ravi',85000.90,'2025-03-31'),
+(4,'Anil',70000.10,'2025-04-04'),
+(5,'Suresh',60000.55,'2025-05-05');
+-- Question
+-- For each record:
+-- Extract day and month
+-- Extract last two digits of salary
+-- Convert employee name to uppercase
+-- Find absolute difference between day and month
+-- Use CASE:
+-- Calendar Match
+-- Calendar Drift
+
+SELECT emp_id,
+DAY(credit_date) AS day_value,
+MONTH(credit_date) AS month_value,
+RIGHT(TRUNCATE(salary,0),2) AS last_two_digits,
+UPPER(emp_name) AS employee_name,
+ABS(DAY(credit_date)-MONTH(credit_date)) AS difference_value,
+CASE
+WHEN DAY(credit_date)=MONTH(credit_date)
+OR RIGHT(TRUNCATE(salary,0),2)=LPAD(MONTH(credit_date),2,'0')
+THEN 'Calendar Match'
+ELSE 'Calendar Drift'
+END AS calendar_status
+FROM salary_calendar;
+
+
+
+
+
+
+
+
+
 
