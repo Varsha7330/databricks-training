@@ -421,7 +421,7 @@ SELECT
 FROM bank_accounts;
 
 
---LEVEL 1
+--LEVEL 1---------------------------------------------------------------------------------------------------------------------
 -- NUMBER 1: Salary Risk Flagging Based on Tax Shock
 CREATE TABLE salary_audit (
     emp_id INT,
@@ -1230,6 +1230,231 @@ THEN 'Calendar Match'
 ELSE 'Calendar Drift'
 END AS calendar_status
 FROM salary_calendar;
+
+--LEVEL 2--------------------------------------------------------------------------------------
+
+-- NUMBER 1: Employee Login Discipline & Performance Classification
+CREATE TABLE employee_login (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    login_time DATETIME,
+    logout_time DATETIME
+);
+
+INSERT INTO employee_login VALUES
+(1,'Karthik','2025-01-15 09:05:00','2025-01-15 18:10:00'),
+(2,'Veena','2025-01-14 10:30:00','2025-01-14 16:00:00'),
+(3,'Ravi','2025-01-13 09:00:00','2025-01-13 20:00:00'),
+(4,'Anil','2025-01-12 11:00:00','2025-01-12 14:00:00'),
+(5,'Suresh','2025-01-11 09:15:00','2025-01-11 17:00:00');
+-- Question
+-- For each employee:
+-- Convert employee name to proper case
+-- Identify whether login date is Weekday or Weekend
+-- Calculate total working hours
+-- Round working hours to 2 decimals
+-- Use CASE:
+-- Good Performer
+-- Bad Performer
+-- Weekend Login
+SELECT emp_id,
+CONCAT(UPPER(LEFT(emp_name,1)),LOWER(SUBSTRING(emp_name,2))) AS employee_name,
+CASE
+WHEN DAYNAME(login_time) IN ('Saturday','Sunday') THEN 'Weekend'
+ELSE 'Weekday'
+END AS login_day_type,
+ROUND(TIMESTAMPDIFF(MINUTE,login_time,logout_time)/60,2) AS working_hours,
+CASE
+WHEN DAYNAME(login_time) NOT IN ('Saturday','Sunday')
+AND TIMESTAMPDIFF(MINUTE,login_time,logout_time)/60>=8
+THEN 'Good Performer'
+WHEN DAYNAME(login_time) NOT IN ('Saturday','Sunday')
+AND TIMESTAMPDIFF(MINUTE,login_time,logout_time)/60<6
+THEN 'Bad Performer'
+ELSE 'Weekend Login'
+END AS performance_status
+FROM employee_login;
+
+
+-- NUMBER 2: Past 7 Days Attendance & Productivity Check
+CREATE TABLE attendance_log (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    login_date DATE,
+    login_time TIME,
+    logout_time TIME
+);
+
+INSERT INTO attendance_log VALUES
+(1,'Karthik','2025-01-14','09:00:00','18:00:00'),
+(2,'Karthik','2025-01-13','09:15:00','17:30:00'),
+(3,'Veena','2025-01-12','10:00:00','15:00:00'),
+(4,'Ravi','2025-01-10','09:00:00','19:00:00'),
+(5,'Anil','2025-01-08','11:00:00','14:00:00');
+-- Question
+-- For each record:
+-- Convert employee name to uppercase
+-- Check whether login date is within last 7 days
+-- Identify weekday or weekend
+-- Calculate working hours using TIMEDIFF
+-- Use CASE:
+-- Active & Productive
+-- Active but Low Hours
+-- Absent from Last 7 Days
+SELECT emp_id,
+UPPER(emp_name) AS employee_name,
+CASE
+WHEN login_date>=CURDATE()-INTERVAL 7 DAY THEN 'Within 7 Days'
+ELSE 'Old Record'
+END AS attendance_check,
+CASE
+WHEN DAYNAME(login_date) IN ('Saturday','Sunday') THEN 'Weekend'
+ELSE 'Weekday'
+END AS day_type,
+TIMEDIFF(logout_time,login_time) AS working_hours,
+CASE
+WHEN login_date>=CURDATE()-INTERVAL 7 DAY
+AND TIMESTAMPDIFF(HOUR,login_time,logout_time)>=8
+THEN 'Active & Productive'
+WHEN login_date>=CURDATE()-INTERVAL 7 DAY
+AND TIMESTAMPDIFF(HOUR,login_time,logout_time)<8
+THEN 'Active but Low Hours'
+ELSE 'Absent from Last 7 Days'
+END AS productivity_status
+FROM attendance_log;
+
+
+-- NUMBER 3: Weekend Work Abuse Detection
+CREATE TABLE weekend_monitor (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    work_date DATE,
+    login_time TIME,
+    logout_time TIME
+);
+
+INSERT INTO weekend_monitor VALUES
+(1,'Ravi','2025-01-11','09:00:00','21:00:00'),
+(2,'Veena','2025-01-12','10:00:00','13:00:00'),
+(3,'Karthik','2025-01-10','09:00:00','18:00:00'),
+(4,'Anil','2025-01-09','11:00:00','14:00:00');
+-- Question
+-- For each employee:
+-- Extract day name from work date
+-- Convert employee name to lowercase
+-- Calculate working hours
+-- Apply CEIL on working hours
+-- Use CASE:
+-- Weekend Overtime
+-- Suspicious Login
+-- Normal Working Day
+SELECT emp_id,
+DAYNAME(work_date) AS day_name,
+LOWER(emp_name) AS employee_name,
+TIMESTAMPDIFF(HOUR,login_time,logout_time) AS working_hours,
+CEIL(TIMESTAMPDIFF(HOUR,login_time,logout_time)) AS ceil_hours,
+CASE
+WHEN DAYNAME(work_date) IN ('Saturday','Sunday')
+AND TIMESTAMPDIFF(HOUR,login_time,logout_time)>=8
+THEN 'Weekend Overtime'
+WHEN DAYNAME(work_date) IN ('Saturday','Sunday')
+AND TIMESTAMPDIFF(HOUR,login_time,logout_time)<4
+THEN 'Suspicious Login'
+ELSE 'Normal Working Day'
+END AS work_status
+FROM weekend_monitor;
+
+
+-- NUMBER 4: Login Time Deviation & Discipline Score
+CREATE TABLE login_discipline (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    login_datetime DATETIME,
+    logout_datetime DATETIME
+);
+
+INSERT INTO login_discipline VALUES
+(1,'Karthik','2025-01-15 08:55:00','2025-01-15 18:10:00'),
+(2,'Veena','2025-01-15 10:45:00','2025-01-15 16:00:00'),
+(3,'Ravi','2025-01-15 09:00:00','2025-01-15 20:30:00'),
+(4,'Anil','2025-01-15 11:30:00','2025-01-15 14:00:00');
+-- Question
+-- For each employee:
+-- Extract login hour
+-- Calculate total working hours
+-- Truncate working hours to 1 decimal
+-- Get weekday name
+-- Use CASE:
+-- Disciplined
+-- Late Comer
+-- Poor Discipline
+SELECT emp_id,
+HOUR(login_datetime) AS login_hour,
+TRUNCATE(TIMESTAMPDIFF(MINUTE,login_datetime,logout_datetime)/60,1) AS working_hours,
+DAYNAME(login_datetime) AS weekday_name,
+CASE
+WHEN DAYNAME(login_datetime) NOT IN ('Saturday','Sunday')
+AND HOUR(login_datetime)<9
+AND TIMESTAMPDIFF(HOUR,login_datetime,logout_datetime)>=8
+THEN 'Disciplined'
+WHEN DAYNAME(login_datetime) NOT IN ('Saturday','Sunday')
+AND HOUR(login_datetime)>10
+THEN 'Late Comer'
+ELSE 'Poor Discipline'
+END AS discipline_status
+FROM login_discipline;
+
+
+-- NUMBER 5: Absenteeism vs Performance Correlation
+CREATE TABLE performance_tracker (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    work_date DATE,
+    login_time TIME,
+    logout_time TIME
+);
+
+INSERT INTO performance_tracker VALUES
+(1,'Karthik','2025-01-09','09:00:00','18:00:00'),
+(2,'Karthik','2025-01-10','09:10:00','17:50:00'),
+(3,'Veena','2025-01-05','10:00:00','15:00:00'),
+(4,'Ravi','2025-01-14','09:00:00','19:00:00'),
+(5,'Anil','2025-01-03','11:00:00','14:00:00');
+-- Question
+-- For each record:
+-- Check whether work date is within last 7 days
+-- Identify weekday or weekend
+-- Calculate total hours worked
+-- Apply FLOOR on hours
+-- Use CASE:
+-- Consistent Performer
+-- Irregular Performer
+-- Absent / Old Record
+SELECT emp_id,
+CASE
+WHEN work_date>=CURDATE()-INTERVAL 7 DAY THEN 'Recent'
+ELSE 'Old'
+END AS record_type,
+CASE
+WHEN DAYNAME(work_date) IN ('Saturday','Sunday') THEN 'Weekend'
+ELSE 'Weekday'
+END AS day_type,
+TIMESTAMPDIFF(HOUR,login_time,logout_time) AS total_hours,
+FLOOR(TIMESTAMPDIFF(HOUR,login_time,logout_time)) AS floor_hours,
+CASE
+WHEN work_date>=CURDATE()-INTERVAL 7 DAY
+AND DAYNAME(work_date) NOT IN ('Saturday','Sunday')
+AND TIMESTAMPDIFF(HOUR,login_time,logout_time)>=8
+THEN 'Consistent Performer'
+WHEN TIMESTAMPDIFF(HOUR,login_time,logout_time)<6
+THEN 'Irregular Performer'
+ELSE 'Absent / Old Record'
+END AS performance_status
+FROM performance_tracker;
+
+
+
+
 
 
 
