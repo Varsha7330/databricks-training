@@ -59,6 +59,67 @@
 
 [View on DB Fiddle](https://www.db-fiddle.com/)
 
+**Schema (MySQL v5.7)**
+
+    CREATE TABLE orders_delivery (
+    
+    order_id INT,
+    
+    customer_name VARCHAR(50),
+    
+    order_date DATE,
+    
+    delivery_date DATE,
+    
+    order_amount DECIMAL(10,2)
+    
+    );
+    INSERT INTO orders_delivery VALUES
+    
+    (101,'rajesh','2025-01-01','2025-01-05',12500.75),
+    
+    (102,'meena','2025-01-10','2025-01-10',8400.40),
+    
+    (103,'arun','2025-01-15','2025-01-20',15600.90),
+    
+    (104,'pooja','2025-01-18',NULL,9200.10);
+    
+
+---
+
+**Query #2**
+
+    select 
+    	order_id,
+        upper(customer_name) as customer_name,
+         DATEDIFF(
+            COALESCE(delivery_date, CURDATE()),
+            order_date
+        ) AS delivery_days,
+        COALESCE(delivery_date, CURDATE()) AS final_delivery_date,
+        TRUNCATE(order_amount,1) AS truncated_amount,
+        case
+        	when delivery_date is NULL
+            	then 'pending'
+            when DATEDIFF(delivery_date, order_date)=0
+            	then 'same-day'
+            when DATEDIFF(delivery_date, order_date)> 3
+            	then 'Delayed'
+            else 'normal'
+        end as delivery_status
+    from orders_delivery;
+
+| order_id | customer_name | delivery_days | final_delivery_date | truncated_amount | delivery_status |
+| -------- | ------------- | ------------- | ------------------- | ---------------- | --------------- |
+| 101      | RAJESH        | 4             | 2025-01-05          | 12500.7          | Delayed         |
+| 102      | MEENA         | 0             | 2025-01-10          | 8400.4           | same-day        |
+| 103      | ARUN          | 5             | 2025-01-20          | 15600.9          | Delayed         |
+| 104      | POOJA         | 483           | 2026-05-16          | 9200.1           | pending         |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/)
+
 
 
 
