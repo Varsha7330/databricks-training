@@ -137,7 +137,120 @@ SELECT
     END AS spender_category
 FROM customer_spending;
 
+--NUMBER 4: Subscription Validity Check
+CREATE TABLE subscriptions (
+    user_id INT,
+    user_email VARCHAR(100),
+    start_date DATE,
+    end_date DATE,
+    subscription_fee DECIMAL(10,2)
+);
 
+INSERT INTO subscriptions VALUES
+(1,'karthik@gmail.com','2024-01-01','2025-01-01',12000.50),
+(2,'veena@yahoo.com','2024-06-15','2024-12-15',8500.75),
+(3,'ravi@hotmail.com','2023-03-01','2024-03-01',15000.90);
+
+--For each user:
+--· Extract email domain
+--· Calculate subscription duration in months
+--· Format fee with commas
+--· Find remaining days from today
+--· CASE:
+--o Active
+--o Expiring Soon (≤30 days)
+--o Expired
+SELECT 
+    user_id,
+    SUBSTRING_INDEX(user_email,'@',-1) AS email_domain,
+    TIMESTAMPDIFF(MONTH, start_date, end_date) AS subscription_duration_months,
+    FORMAT(subscription_fee,2) AS formatted_fee,
+    DATEDIFF(end_date, CURDATE()) AS remaining_days,
+    CASE
+        WHEN end_date < CURDATE()
+            THEN 'Expired'
+        WHEN DATEDIFF(end_date, CURDATE()) <= 30
+            THEN 'Expiring Soon'
+        ELSE 'Active'
+    END AS subscription_status
+
+FROM subscriptions;
+
+--NUMBER 5:Loan EMI Risk Categorization
+CREATE TABLE loan_details (
+    loan_id INT,
+    customer_name VARCHAR(50),
+    loan_amount DECIMAL(12,2),
+    interest_rate DECIMAL(5,2),
+    loan_start DATE
+);
+
+INSERT INTO loan_details VALUES
+(201,'suresh',500000.75,8.5,'2022-01-10'),
+(202,'mahesh',750000.40,9.2,'2021-05-20'),
+(203,'anita',300000.90,7.8,'2023-07-01');
+--QUESTION 
+--Compute:
+--· Monthly interest using power function
+-- Years since loan start
+--· Round EMI
+--· Uppercase customer name
+--· CASE:
+--o High Risk if interest > 9
+--o Medium Risk
+--o Low Risk
+SELECT 
+    loan_id,
+    UPPER(customer_name) AS customer_name,
+    POWER((1 + interest_rate/100/12),12) AS monthly_interest,
+    TIMESTAMPDIFF(YEAR, loan_start, CURDATE()) AS years_since_loan,
+    ROUND(loan_amount * (interest_rate/1200),0) AS emi,
+    CASE
+        WHEN interest_rate > 9
+            THEN 'High Risk'
+        WHEN interest_rate BETWEEN 8 AND 9
+            THEN 'Medium Risk'
+        ELSE 'Low Risk'
+    END AS risk_category
+FROM loan_details;
+
+--NUMBER 6 :Employee Attendance Evaluation
+CREATE TABLE attendance (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    total_days INT,
+    present_days INT,
+    record_date DATE
+);
+
+INSERT INTO attendance VALUES
+(1,'karthik',30,28,'2025-01-31'),
+(2,'veena',30,22,'2025-01-31'),
+(3,'ravi',30,18,'2025-01-31');
+--Question
+--Calculate:
+--· Attendance percentage (rounded)
+--· Month name
+--· Difference between total and present days
+--· Lowercase employee name
+--· CASE:
+--o Excellent ≥90%
+--o Average 75–89%
+--o Poor otherwise
+SELECT 
+    emp_id,
+    LOWER(emp_name) AS employee_name,
+    ROUND((present_days / total_days) * 100,2) AS attendance_percentage,
+    MONTHNAME(record_date) AS month_name,
+    (total_days - present_days) AS absent_days,
+    CASE
+        WHEN ((present_days / total_days) * 100) >= 90
+            THEN 'Excellent'
+        WHEN ((present_days / total_days) * 100) BETWEEN 75 AND 89
+            THEN 'Average'
+        ELSE 'Poor'
+    END AS attendance_status
+FROM attendance;
 
 		
 
