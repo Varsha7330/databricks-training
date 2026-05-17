@@ -330,6 +330,57 @@ LEFT JOIN employees e
 ON d.dept_id = e.dept_id
 GROUP BY d.dept_name;
 
+-- Question 26
+-- List all employees and departments, including departments without employees.
+SELECT 
+e.emp_name,
+d.dept_name
+FROM departments d
+LEFT JOIN employees e
+ON d.dept_id = e.dept_id;
+
+-- Question 27
+-- Employees without salary records.
+SELECT 
+e.emp_name
+FROM employees e
+LEFT JOIN salaries s
+ON e.emp_id = s.emp_id
+WHERE s.salary IS NULL;
+
+-- Question 28
+-- Employees and their projects including employees without projects.
+SELECT 
+e.emp_name,
+p.project_name
+FROM employees e
+LEFT JOIN projects p
+ON e.emp_id = p.emp_id;
+
+-- Question 29
+-- Employees with department and project assignments including NULL values.
+SELECT 
+e.emp_name,
+d.dept_name,
+p.project_name
+FROM employees e
+LEFT JOIN departments d
+ON e.dept_id = d.dept_id
+LEFT JOIN projects p
+ON e.emp_id = p.emp_id;
+
+-- Question 30
+-- Employees with departments, including employees without department.
+SELECT 
+e.emp_name,
+d.dept_name
+FROM employees e
+LEFT JOIN departments d
+ON e.dept_id = d.dept_id;
+
+
+
+
 
 
 
