@@ -1,1 +1,714 @@
 
+**Schema (MySQL v5.7)**
+
+    CREATE TABLE employees (
+    emp_id INT PRIMARY KEY,
+    emp_name VARCHAR(50),
+    manager_id INT,
+    dept_id INT
+    );
+    
+    INSERT INTO employees VALUES
+    (1, 'Karthik', NULL, 1),
+    (2, 'Ajay', 1, 1),
+    (3, 'Vijay', 1, 2),
+    (4, 'Vinay', 2, 2),
+    (5, 'Meena', 3, 3),
+    (6, 'Veer', NULL, 4),
+    (7, 'Keerthi', 4, 5),
+    (8, 'Priya', 4, 5);
+    
+    CREATE TABLE departments (
+    dept_id INT PRIMARY KEY,
+    dept_name VARCHAR(50)
+    );
+    
+    INSERT INTO departments VALUES
+    (1, 'HR'),
+    (2, 'IT'),
+    (3, 'Finance'),
+    (4, 'Marketing'),
+    (5, 'Sales');
+    
+    CREATE TABLE projects (
+    project_id INT PRIMARY KEY,
+    project_name VARCHAR(50),
+    emp_id INT
+    );
+    
+    INSERT INTO projects VALUES
+    (1, 'Project A', 1),
+    (2, 'Project B', 2),
+    (3, 'Project C', 3),
+    (4, 'Project D', 4),
+    (5, 'Project E', 5);
+    
+    CREATE TABLE salaries (
+    emp_id INT,
+    salary DECIMAL(10,2)
+    );
+    
+    INSERT INTO salaries VALUES
+    (1,50000),
+    (2,45000),
+    (3,55000),
+    (5,60000);
+    
+    CREATE TABLE contacts (
+    emp_id INT,
+    phone VARCHAR(15)
+    );
+    
+    INSERT INTO contacts VALUES
+    (1,'9876543210'),
+    (2,'9123456780'),
+    (4,'9988776655');
+    
+    CREATE TABLE employee_departments (
+    emp_id INT,
+    dept_id INT
+    );
+    
+    INSERT INTO employee_departments VALUES
+    (1,1),
+    (1,2),
+    (2,1),
+    (3,2);
+    
+    
+    
+
+---
+
+**Query #1**
+
+    SELECT 
+    e.emp_name AS Employee,
+    m.emp_name AS Manager
+    FROM employees e
+    LEFT JOIN employees m
+    ON e.manager_id = m.emp_id;
+
+| Employee | Manager |
+| -------- | ------- |
+| Karthik  |         |
+| Ajay     | Karthik |
+| Vijay    | Karthik |
+| Vinay    | Ajay    |
+| Meena    | Vijay   |
+| Veer     |         |
+| Keerthi  | Vinay   |
+| Priya    | Vinay   |
+
+---
+**Query #2**
+
+    SELECT 
+    e.emp_name,
+    d.dept_name
+    FROM employees e
+    LEFT JOIN departments d
+    ON e.dept_id = d.dept_id;
+
+| emp_name | dept_name |
+| -------- | --------- |
+| Karthik  | HR        |
+| Ajay     | HR        |
+| Vijay    | IT        |
+| Vinay    | IT        |
+| Meena    | Finance   |
+| Veer     | Marketing |
+| Keerthi  | Sales     |
+| Priya    | Sales     |
+
+---
+**Query #3**
+
+    SELECT 
+    e.emp_name AS Employee,
+    m.emp_name AS Manager
+    FROM employees e
+    INNER JOIN employees m
+    ON e.manager_id = m.emp_id;
+
+| Employee | Manager |
+| -------- | ------- |
+| Ajay     | Karthik |
+| Vijay    | Karthik |
+| Vinay    | Ajay    |
+| Meena    | Vijay   |
+| Keerthi  | Vinay   |
+| Priya    | Vinay   |
+
+---
+**Query #4**
+
+    -- Question 4
+    -- Employees and departments.
+    SELECT 
+    e.emp_name,
+    d.dept_name
+    FROM departments d
+    LEFT JOIN employees e
+    ON d.dept_id = e.dept_id;
+
+| emp_name | dept_name |
+| -------- | --------- |
+| Karthik  | HR        |
+| Ajay     | HR        |
+| Vijay    | IT        |
+| Vinay    | IT        |
+| Meena    | Finance   |
+| Veer     | Marketing |
+| Keerthi  | Sales     |
+| Priya    | Sales     |
+
+---
+**Query #5**
+
+    -- Question 5
+    -- Employees without department.
+    SELECT *
+    FROM employees
+    WHERE dept_id IS NULL;
+
+There are no results to be displayed.
+
+---
+**Query #6**
+
+    -- Question 6
+    -- Fetch employees and their projects, including employees without projects.
+    SELECT 
+    e.emp_name,
+    p.project_name
+    FROM employees e
+    LEFT JOIN projects p
+    ON e.emp_id = p.emp_id;
+
+| emp_name | project_name |
+| -------- | ------------ |
+| Karthik  | Project A    |
+| Ajay     | Project B    |
+| Vijay    | Project C    |
+| Vinay    | Project D    |
+| Meena    | Project E    |
+| Veer     |              |
+| Keerthi  |              |
+| Priya    |              |
+
+---
+**Query #7**
+
+    -- Question 7
+    -- Employees who completed at least one project.
+    SELECT 
+    e.emp_name,
+    p.project_name
+    FROM employees e
+    INNER JOIN projects p
+    ON e.emp_id = p.emp_id;
+
+| emp_name | project_name |
+| -------- | ------------ |
+| Karthik  | Project A    |
+| Ajay     | Project B    |
+| Vijay    | Project C    |
+| Vinay    | Project D    |
+| Meena    | Project E    |
+
+---
+**Query #8**
+
+    -- Question 8
+    -- Employees and projects, ensuring no project is omitted.
+    SELECT 
+    e.emp_name,
+    p.project_name
+    FROM employees e
+    RIGHT JOIN projects p
+    ON e.emp_id = p.emp_id;
+
+| emp_name | project_name |
+| -------- | ------------ |
+| Karthik  | Project A    |
+| Ajay     | Project B    |
+| Vijay    | Project C    |
+| Vinay    | Project D    |
+| Meena    | Project E    |
+
+---
+**Query #9**
+
+    -- Question 9
+    -- Employees and salaries with NULL if no salary record.
+    SELECT 
+    e.emp_name,
+    s.salary
+    FROM employees e
+    LEFT JOIN salaries s
+    ON e.emp_id = s.emp_id;
+
+| emp_name | salary  |
+| -------- | ------- |
+| Karthik  | 50000.0 |
+| Ajay     | 45000.0 |
+| Vijay    | 55000.0 |
+| Meena    | 60000.0 |
+| Vinay    |         |
+| Veer     |         |
+| Keerthi  |         |
+| Priya    |         |
+
+---
+**Query #10**
+
+    -- Question 10
+    -- Employees and department names including employees without department.
+    SELECT 
+    e.emp_name,
+    d.dept_name
+    FROM employees e
+    LEFT JOIN departments d
+    ON e.dept_id = d.dept_id;
+
+| emp_name | dept_name |
+| -------- | --------- |
+| Karthik  | HR        |
+| Ajay     | HR        |
+| Vijay    | IT        |
+| Vinay    | IT        |
+| Meena    | Finance   |
+| Veer     | Marketing |
+| Keerthi  | Sales     |
+| Priya    | Sales     |
+
+---
+**Query #11**
+
+    -- Question 11
+    -- Find all departments and employees, including departments with no employees.
+    SELECT 
+    d.dept_name,
+    e.emp_name
+    FROM departments d
+    LEFT JOIN employees e
+    ON d.dept_id = e.dept_id;
+
+| dept_name | emp_name |
+| --------- | -------- |
+| HR        | Karthik  |
+| HR        | Ajay     |
+| IT        | Vijay    |
+| IT        | Vinay    |
+| Finance   | Meena    |
+| Marketing | Veer     |
+| Sales     | Keerthi  |
+| Sales     | Priya    |
+
+---
+**Query #12**
+
+    -- Question 12
+    -- Employees with contact information including employees without contacts.
+    SELECT 
+    e.emp_name,
+    c.phone
+    FROM employees e
+    LEFT JOIN contacts c
+    ON e.emp_id = c.emp_id;
+
+| emp_name | phone      |
+| -------- | ---------- |
+| Karthik  | 9876543210 |
+| Ajay     | 9123456780 |
+| Vinay    | 9988776655 |
+| Vijay    |            |
+| Meena    |            |
+| Veer     |            |
+| Keerthi  |            |
+| Priya    |            |
+
+---
+**Query #13**
+
+    -- Question 13
+    -- Employees and departments including:
+    -- employees without department
+    -- departments without employees
+    SELECT 
+    e.emp_name,
+    d.dept_name
+    FROM employees e
+    LEFT JOIN departments d
+    ON e.dept_id = d.dept_id
+    
+    UNION
+    
+    SELECT 
+    e.emp_name,
+    d.dept_name
+    FROM employees e
+    RIGHT JOIN departments d
+    ON e.dept_id = d.dept_id;
+
+| emp_name | dept_name |
+| -------- | --------- |
+| Karthik  | HR        |
+| Ajay     | HR        |
+| Vijay    | IT        |
+| Vinay    | IT        |
+| Meena    | Finance   |
+| Veer     | Marketing |
+| Keerthi  | Sales     |
+| Priya    | Sales     |
+
+---
+**Query #14**
+
+    -- Question 14
+    -- Employees who have not completed any project.
+    SELECT 
+    e.emp_name,
+    p.project_name
+    FROM employees e
+    LEFT JOIN projects p
+    ON e.emp_id = p.emp_id
+    WHERE p.project_id IS NULL;
+
+| emp_name | project_name |
+| -------- | ------------ |
+| Veer     |              |
+| Keerthi  |              |
+| Priya    |              |
+
+---
+**Query #15**
+
+    -- Question 15
+    -- Employees and their projects including employees without projects.
+    SELECT 
+    e.emp_name,
+    p.project_name
+    FROM employees e
+    LEFT JOIN projects p
+    ON e.emp_id = p.emp_id;
+
+| emp_name | project_name |
+| -------- | ------------ |
+| Karthik  | Project A    |
+| Ajay     | Project B    |
+| Vijay    | Project C    |
+| Vinay    | Project D    |
+| Meena    | Project E    |
+| Veer     |              |
+| Keerthi  |              |
+| Priya    |              |
+
+---
+**Query #16**
+
+    -- Question 16
+    -- List all projects and employees assigned to them, including projects without employees.
+    SELECT 
+    p.project_name,
+    e.emp_name
+    FROM projects p
+    LEFT JOIN employees e
+    ON p.emp_id = e.emp_id;
+
+| project_name | emp_name |
+| ------------ | -------- |
+| Project A    | Karthik  |
+| Project B    | Ajay     |
+| Project C    | Vijay    |
+| Project D    | Vinay    |
+| Project E    | Meena    |
+
+---
+**Query #17**
+
+    -- Question 17
+    -- Employees who have both a manager and at least one project.
+    SELECT 
+    e.emp_name AS Employee,
+    m.emp_name AS Manager,
+    p.project_name
+    FROM employees e
+    INNER JOIN employees m
+    ON e.manager_id = m.emp_id
+    INNER JOIN projects p
+    ON e.emp_id = p.emp_id;
+
+| Employee | Manager | project_name |
+| -------- | ------- | ------------ |
+| Ajay     | Karthik | Project B    |
+| Vijay    | Karthik | Project C    |
+| Vinay    | Ajay    | Project D    |
+| Meena    | Vijay   | Project E    |
+
+---
+**Query #18**
+
+    -- Question 18
+    -- Employees and departments excluding employees without department.
+    SELECT 
+    e.emp_name,
+    d.dept_name
+    FROM employees e
+    INNER JOIN departments d
+    ON e.dept_id = d.dept_id;
+
+| emp_name | dept_name |
+| -------- | --------- |
+| Karthik  | HR        |
+| Ajay     | HR        |
+| Vijay    | IT        |
+| Vinay    | IT        |
+| Meena    | Finance   |
+| Veer     | Marketing |
+| Keerthi  | Sales     |
+| Priya    | Sales     |
+
+---
+**Query #19**
+
+    -- Question 19
+    -- Employees belonging to multiple departments.
+    SELECT 
+    e.emp_name,
+    d.dept_name
+    FROM employee_departments ed
+    JOIN employees e
+    ON ed.emp_id = e.emp_id
+    JOIN departments d
+    ON ed.dept_id = d.dept_id;
+
+| emp_name | dept_name |
+| -------- | --------- |
+| Karthik  | HR        |
+| Karthik  | IT        |
+| Ajay     | HR        |
+| Vijay    | IT        |
+
+---
+**Query #20**
+
+    -- Question 20
+    -- List all departments and employees including departments without employees.
+    SELECT 
+    d.dept_name,
+    e.emp_name
+    FROM departments d
+    LEFT JOIN employees e
+    ON d.dept_id = e.dept_id;
+
+| dept_name | emp_name |
+| --------- | -------- |
+| HR        | Karthik  |
+| HR        | Ajay     |
+| IT        | Vijay    |
+| IT        | Vinay    |
+| Finance   | Meena    |
+| Marketing | Veer     |
+| Sales     | Keerthi  |
+| Sales     | Priya    |
+
+---
+**Query #21**
+
+    SELECT 
+    e.emp_name,
+    p.project_name
+    FROM employees e
+    INNER JOIN projects p
+    ON e.emp_id = p.emp_id
+    WHERE e.dept_id IS NULL;
+
+There are no results to be displayed.
+
+---
+**Query #22**
+
+    SELECT 
+    d.dept_name,
+    COUNT(e.emp_id) AS Total_Employees
+    FROM departments d
+    LEFT JOIN employees e
+    ON d.dept_id = e.dept_id
+    GROUP BY d.dept_name;
+
+| dept_name | Total_Employees |
+| --------- | --------------- |
+| Finance   | 1               |
+| HR        | 2               |
+| IT        | 2               |
+| Marketing | 1               |
+| Sales     | 2               |
+
+---
+**Query #23**
+
+    SELECT 
+    e.emp_name AS Employee,
+    m.emp_name AS Manager
+    FROM employees e
+    INNER JOIN employees m
+    ON e.manager_id = m.emp_id;
+
+| Employee | Manager |
+| -------- | ------- |
+| Ajay     | Karthik |
+| Vijay    | Karthik |
+| Vinay    | Ajay    |
+| Meena    | Vijay   |
+| Keerthi  | Vinay   |
+| Priya    | Vinay   |
+
+---
+**Query #24**
+
+    SELECT 
+    e.emp_name AS Employee,
+    m.emp_name AS Manager
+    FROM employees e
+    LEFT JOIN employees m
+    ON e.manager_id = m.emp_id;
+
+| Employee | Manager |
+| -------- | ------- |
+| Karthik  |         |
+| Ajay     | Karthik |
+| Vijay    | Karthik |
+| Vinay    | Ajay    |
+| Meena    | Vijay   |
+| Veer     |         |
+| Keerthi  | Vinay   |
+| Priya    | Vinay   |
+
+---
+**Query #25**
+
+    SELECT 
+    d.dept_name,
+    COUNT(e.emp_id) AS Employee_Count
+    FROM departments d
+    LEFT JOIN employees e
+    ON d.dept_id = e.dept_id
+    GROUP BY d.dept_name;
+
+| dept_name | Employee_Count |
+| --------- | -------------- |
+| Finance   | 1              |
+| HR        | 2              |
+| IT        | 2              |
+| Marketing | 1              |
+| Sales     | 2              |
+
+---
+**Query #26**
+
+    SELECT 
+    e.emp_name,
+    d.dept_name
+    FROM departments d
+    LEFT JOIN employees e
+    ON d.dept_id = e.dept_id;
+
+| emp_name | dept_name |
+| -------- | --------- |
+| Karthik  | HR        |
+| Ajay     | HR        |
+| Vijay    | IT        |
+| Vinay    | IT        |
+| Meena    | Finance   |
+| Veer     | Marketing |
+| Keerthi  | Sales     |
+| Priya    | Sales     |
+
+---
+**Query #27**
+
+    SELECT 
+    e.emp_name
+    FROM employees e
+    LEFT JOIN salaries s
+    ON e.emp_id = s.emp_id
+    WHERE s.salary IS NULL;
+
+| emp_name |
+| -------- |
+| Vinay    |
+| Veer     |
+| Keerthi  |
+| Priya    |
+
+---
+**Query #28**
+
+    SELECT 
+    e.emp_name,
+    p.project_name
+    FROM employees e
+    LEFT JOIN projects p
+    ON e.emp_id = p.emp_id;
+
+| emp_name | project_name |
+| -------- | ------------ |
+| Karthik  | Project A    |
+| Ajay     | Project B    |
+| Vijay    | Project C    |
+| Vinay    | Project D    |
+| Meena    | Project E    |
+| Veer     |              |
+| Keerthi  |              |
+| Priya    |              |
+
+---
+**Query #29**
+
+    SELECT 
+    e.emp_name,
+    d.dept_name,
+    p.project_name
+    FROM employees e
+    LEFT JOIN departments d
+    ON e.dept_id = d.dept_id
+    LEFT JOIN projects p
+    ON e.emp_id = p.emp_id;
+
+| emp_name | dept_name | project_name |
+| -------- | --------- | ------------ |
+| Karthik  | HR        | Project A    |
+| Ajay     | HR        | Project B    |
+| Vijay    | IT        | Project C    |
+| Vinay    | IT        | Project D    |
+| Meena    | Finance   | Project E    |
+| Veer     | Marketing |              |
+| Keerthi  | Sales     |              |
+| Priya    | Sales     |              |
+
+---
+**Query #30**
+
+    SELECT 
+    e.emp_name,
+    d.dept_name
+    FROM employees e
+    LEFT JOIN departments d
+    ON e.dept_id = d.dept_id;
+
+| emp_name | dept_name |
+| -------- | --------- |
+| Karthik  | HR        |
+| Ajay     | HR        |
+| Vijay    | IT        |
+| Vinay    | IT        |
+| Meena    | Finance   |
+| Veer     | Marketing |
+| Keerthi  | Sales     |
+| Priya    | Sales     |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/)
