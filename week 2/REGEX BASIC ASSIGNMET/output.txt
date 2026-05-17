@@ -1,1 +1,308 @@
+**Schema (MySQL v5.7)**
 
+    CREATE TABLE regex_practice (
+    id INT,
+    full_text VARCHAR(200),
+    email VARCHAR(100),
+    phone VARCHAR(30),
+    mixed_value VARCHAR(100)
+    );
+    INSERT INTO regex_practice VALUES
+    (1,'EMP001_IN_91','karthik@gmail.com','+91-9876543210','abc123xyz'),
+    (2,'EMP002_US_01','rahul@yahoo.com','+1-7654321098','test45done'),
+    (3,'EMP003_UK_44','john@outlook.com','+44-9988776655','run9fast'),
+    (4,'EMP004_AU_61','steve@gmail.com','+61-8899776655','go88home'),
+    (5,'EMP005_IN_91','arjun@company.in','+91-7788996655','data77lake');
+    
+
+---
+
+**Query #1**
+
+    SELECT mixed_value
+    FROM regex_practice
+    WHERE mixed_value REGEXP '^[0-9]';
+
+There are no results to be displayed.
+
+---
+**Query #2**
+
+    SELECT RIGHT(mixed_value,1)
+    FROM regex_practice;
+
+| RIGHT(mixed_value,1) |
+| -------------------- |
+| z                    |
+| e                    |
+| t                    |
+| e                    |
+| e                    |
+
+---
+**Query #3**
+
+    SELECT LEFT(mixed_value,1)
+    FROM regex_practice;
+
+| LEFT(mixed_value,1) |
+| ------------------- |
+| a                   |
+| t                   |
+| r                   |
+| g                   |
+| d                   |
+
+---
+**Query #4**
+
+    SELECT RIGHT(mixed_value,1)
+    FROM regex_practice;
+
+| RIGHT(mixed_value,1) |
+| -------------------- |
+| z                    |
+| e                    |
+| t                    |
+| e                    |
+| e                    |
+
+---
+**Query #5**
+
+    SELECT mixed_value
+    FROM regex_practice
+    WHERE mixed_value REGEXP '[0-9][0-9]';
+
+| mixed_value |
+| ----------- |
+| abc123xyz   |
+| test45done  |
+| go88home    |
+| data77lake  |
+
+---
+**Query #6**
+
+    SELECT mixed_value
+    FROM regex_practice
+    WHERE mixed_value REGEXP '[0-9]';
+
+| mixed_value |
+| ----------- |
+| abc123xyz   |
+| test45done  |
+| run9fast    |
+| go88home    |
+| data77lake  |
+
+---
+**Query #7**
+
+    SELECT phone,
+    SUBSTRING_INDEX(phone,'-',1)
+    FROM regex_practice;
+
+| phone          | SUBSTRING_INDEX(phone,'-',1) |
+| -------------- | ---------------------------- |
+| +91-9876543210 | +91                          |
+| +1-7654321098  | +1                           |
+| +44-9988776655 | +44                          |
+| +61-8899776655 | +61                          |
+| +91-7788996655 | +91                          |
+
+---
+**Query #8**
+
+    SELECT mixed_value
+    FROM regex_practice
+    WHERE mixed_value REGEXP '[0-9]';
+
+| mixed_value |
+| ----------- |
+| abc123xyz   |
+| test45done  |
+| run9fast    |
+| go88home    |
+| data77lake  |
+
+---
+**Query #9**
+
+    SELECT email,
+    SUBSTRING_INDEX(email,'@',1)
+    FROM regex_practice;
+
+| email             | SUBSTRING_INDEX(email,'@',1) |
+| ----------------- | ---------------------------- |
+| karthik@gmail.com | karthik                      |
+| rahul@yahoo.com   | rahul                        |
+| john@outlook.com  | john                         |
+| steve@gmail.com   | steve                        |
+| arjun@company.in  | arjun                        |
+
+---
+**Query #10**
+
+    SELECT email,
+    SUBSTRING_INDEX(email,'@',-1)
+    FROM regex_practice;
+
+| email             | SUBSTRING_INDEX(email,'@',-1) |
+| ----------------- | ----------------------------- |
+| karthik@gmail.com | gmail.com                     |
+| rahul@yahoo.com   | yahoo.com                     |
+| john@outlook.com  | outlook.com                   |
+| steve@gmail.com   | gmail.com                     |
+| arjun@company.in  | company.in                    |
+
+---
+**Query #11**
+
+    SELECT email,
+    SUBSTRING_INDEX(email,'@',-1)
+    FROM regex_practice;
+
+| email             | SUBSTRING_INDEX(email,'@',-1) |
+| ----------------- | ----------------------------- |
+| karthik@gmail.com | gmail.com                     |
+| rahul@yahoo.com   | yahoo.com                     |
+| john@outlook.com  | outlook.com                   |
+| steve@gmail.com   | gmail.com                     |
+| arjun@company.in  | company.in                    |
+
+---
+**Query #12**
+
+    SELECT email,
+    SUBSTRING_INDEX(email,'.',-1)
+    FROM regex_practice;
+
+| email             | SUBSTRING_INDEX(email,'.',-1) |
+| ----------------- | ----------------------------- |
+| karthik@gmail.com | com                           |
+| rahul@yahoo.com   | com                           |
+| john@outlook.com  | com                           |
+| steve@gmail.com   | com                           |
+| arjun@company.in  | in                            |
+
+---
+**Query #13**
+
+    SELECT mixed_value
+    FROM regex_practice
+    WHERE mixed_value REGEXP '[A-Za-z]';
+
+| mixed_value |
+| ----------- |
+| abc123xyz   |
+| test45done  |
+| run9fast    |
+| go88home    |
+| data77lake  |
+
+---
+**Query #14**
+
+    SELECT mixed_value
+    FROM regex_practice
+    WHERE mixed_value REGEXP '[0-9]';
+
+| mixed_value |
+| ----------- |
+| abc123xyz   |
+| test45done  |
+| run9fast    |
+| go88home    |
+| data77lake  |
+
+---
+**Query #15**
+
+    SELECT LEFT(full_text,3)
+    FROM regex_practice;
+
+| LEFT(full_text,3) |
+| ----------------- |
+| EMP               |
+| EMP               |
+| EMP               |
+| EMP               |
+| EMP               |
+
+---
+**Query #16**
+
+    SELECT RIGHT(full_text,2)
+    FROM regex_practice;
+
+| RIGHT(full_text,2) |
+| ------------------ |
+| 91                 |
+| 01                 |
+| 44                 |
+| 61                 |
+| 91                 |
+
+---
+**Query #17**
+
+    SELECT full_text
+    FROM regex_practice
+    WHERE full_text REGEXP '[0-9]';
+
+| full_text    |
+| ------------ |
+| EMP001_IN_91 |
+| EMP002_US_01 |
+| EMP003_UK_44 |
+| EMP004_AU_61 |
+| EMP005_IN_91 |
+
+---
+**Query #18**
+
+    SELECT RIGHT(full_text,2)
+    FROM regex_practice;
+
+| RIGHT(full_text,2) |
+| ------------------ |
+| 91                 |
+| 01                 |
+| 44                 |
+| 61                 |
+| 91                 |
+
+---
+**Query #19**
+
+    SELECT full_text
+    FROM regex_practice
+    WHERE full_text REGEXP '_[A-Za-z]+_';
+
+| full_text    |
+| ------------ |
+| EMP001_IN_91 |
+| EMP002_US_01 |
+| EMP003_UK_44 |
+| EMP004_AU_61 |
+| EMP005_IN_91 |
+
+---
+**Query #20**
+
+    SELECT phone,
+    SUBSTRING(phone,2,2)
+    FROM regex_practice;
+
+| phone          | SUBSTRING(phone,2,2) |
+| -------------- | -------------------- |
+| +91-9876543210 | 91                   |
+| +1-7654321098  | 1-                   |
+| +44-9988776655 | 44                   |
+| +61-8899776655 | 61                   |
+| +91-7788996655 | 91                   |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/)
