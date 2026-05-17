@@ -1,1 +1,198 @@
 
+**Schema (MySQL v5.7)**
+
+    
+
+---
+
+**Query #1**
+
+    SELECT '123ABc' REGEXP '[0-9]';
+
+| '123ABc' REGEXP '[0-9]' |
+| ----------------------- |
+| 1                       |
+
+---
+**Query #2**
+
+    SELECT '123ABc' REGEXP '[A-Za-z]';
+
+| '123ABc' REGEXP '[A-Za-z]' |
+| -------------------------- |
+| 1                          |
+
+---
+**Query #3**
+
+    SELECT '123abc' REGEXP '^[0-9]';
+
+| '123abc' REGEXP '^[0-9]' |
+| ------------------------ |
+| 1                        |
+
+---
+**Query #4**
+
+    SELECT 'abc123' REGEXP '^[0-9]';
+
+| 'abc123' REGEXP '^[0-9]' |
+| ------------------------ |
+| 0                        |
+
+---
+**Query #5**
+
+    SELECT 'abc123' REGEXP '[0-9]$';
+
+| 'abc123' REGEXP '[0-9]$' |
+| ------------------------ |
+| 1                        |
+
+---
+**Query #6**
+
+    SELECT '123abc' REGEXP '[0-9]$';
+
+| '123abc' REGEXP '[0-9]$' |
+| ------------------------ |
+| 0                        |
+
+---
+**Query #7**
+
+    SELECT '12345678abc' REGEXP '[0-9]{2}';
+
+| '12345678abc' REGEXP '[0-9]{2}' |
+| ------------------------------- |
+| 1                               |
+
+---
+**Query #8**
+
+    SELECT 'abcdefghi123' REGEXP '[A-Za-z]{2}';
+
+| 'abcdefghi123' REGEXP '[A-Za-z]{2}' |
+| ----------------------------------- |
+| 1                                   |
+
+---
+**Query #9**
+
+    SELECT '123abc' REGEXP '[0-9]+';
+
+| '123abc' REGEXP '[0-9]+' |
+| ------------------------ |
+| 1                        |
+
+---
+**Query #10**
+
+    SELECT 'abc123' REGEXP '[0-9]+';
+
+| 'abc123' REGEXP '[0-9]+' |
+| ------------------------ |
+| 1                        |
+
+---
+**Query #11**
+
+    SELECT 'abc123' REGEXP '[A-Za-z]+';
+
+| 'abc123' REGEXP '[A-Za-z]+' |
+| --------------------------- |
+| 1                           |
+
+---
+**Query #12**
+
+    SELECT '123abc567' REGEXP '[0-9]+';
+
+| '123abc567' REGEXP '[0-9]+' |
+| --------------------------- |
+| 1                           |
+
+---
+**Query #13**
+
+    SELECT 'abc123cde' REGEXP '[A-Za-z]+';
+
+| 'abc123cde' REGEXP '[A-Za-z]+' |
+| ------------------------------ |
+| 1                              |
+
+---
+**Query #14**
+
+    SELECT '123abc567' REGEXP '[0-9A-Za-z]+';
+
+| '123abc567' REGEXP '[0-9A-Za-z]+' |
+| --------------------------------- |
+| 1                                 |
+
+---
+**Query #15**
+
+    SELECT 'abc123gef' REGEXP '[0-9]+';
+
+| 'abc123gef' REGEXP '[0-9]+' |
+| --------------------------- |
+| 1                           |
+
+---
+**Query #16**
+
+    SELECT 'karthik@gmail.com' REGEXP '@[A-Za-z.]+';
+
+| 'karthik@gmail.com' REGEXP '@[A-Za-z.]+' |
+| ---------------------------------------- |
+| 1                                        |
+
+---
+**Query #17**
+
+    SELECT 'karthik@gmail.com' REGEXP '\\.[A-Za-z]+$';
+
+| 'karthik@gmail.com' REGEXP '\\.[A-Za-z]+$' |
+| ------------------------------------------ |
+| 1                                          |
+
+---
+**Query #18**
+
+    SELECT '+91-9989454737' REGEXP '\\+91-[0-9]{10}';
+
+| '+91-9989454737' REGEXP '\\+91-[0-9]{10}' |
+| ----------------------------------------- |
+| 1                                         |
+
+---
+**Query #19**
+
+    SELECT REPLACE('@gmail.com','@','');
+
+| REPLACE('@gmail.com','@','') |
+| ---------------------------- |
+| gmail.com                    |
+
+---
+**Query #20**
+
+    SELECT 'karthik@gmail.com' REGEXP '[A-Za-z0-9._-]+@[A-Za-z0-9]+\\.[A-Za-z]{2,3}';
+
+| 'karthik@gmail.com' REGEXP '[A-Za-z0-9._-]+@[A-Za-z0-9]+\\.[A-Za-z]{2,3}' |
+| ------------------------------------------------------------------------- |
+| 1                                                                         |
+
+---
+**Query #21**
+
+    SELECT '@gmail.com' REGEXP '[A-Za-z0-9._-]+@[A-Za-z0-9]+\\.[A-Za-z]{2,3}';
+
+| '@gmail.com' REGEXP '[A-Za-z0-9._-]+@[A-Za-z0-9]+\\.[A-Za-z]{2,3}' |
+| ------------------------------------------------------------------ |
+| 0                                                                  |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/)
