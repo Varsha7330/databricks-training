@@ -1,1 +1,300 @@
+**Schema (MySQL v5.7)**
 
+    CREATE TABLE employees (
+    emp_id INT PRIMARY KEY,
+    full_name VARCHAR(100),
+    email VARCHAR(100),
+    department VARCHAR(50),
+    city VARCHAR(50),
+    salary VARCHAR(20),
+    remarks VARCHAR(200)
+    );
+    INSERT INTO employees VALUES
+    (1, 'Karthik Kondpak', 'karthik.k@gmail.com', 'Data Engineering', 'Hyderabad', '75000', ' Top performer '),
+    (2, 'Veena Reddy', 'veena_r@company.com', 'Analytics', 'Bangalore', '65000', 'Excellent communication'),
+    (3, 'Ravi kumar', 'ravi.kumar@org.in', 'Data Science', 'Chennai', '85000', 'Needs improvement'),
+    (4, 'Anil', 'anil@abc.com', 'DEVOPS', 'Pune', '70000', NULL),
+    (5, ' Suresh ', 'suresh@xyz.com', 'data engineering', ' hyderabad ', '60000', ' ');
+
+---
+
+**Query #1**
+
+    SELECT full_name, LENGTH(full_name)
+    FROM employees;
+
+| full_name       | LENGTH(full_name) |
+| --------------- | ----------------- |
+| Karthik Kondpak | 15                |
+| Veena Reddy     | 11                |
+| Ravi kumar      | 10                |
+| Anil            | 4                 |
+|  Suresh         | 8                 |
+
+---
+**Query #2**
+
+    SELECT full_name, CHAR_LENGTH(full_name)
+    FROM employees;
+
+| full_name       | CHAR_LENGTH(full_name) |
+| --------------- | ---------------------- |
+| Karthik Kondpak | 15                     |
+| Veena Reddy     | 11                     |
+| Ravi kumar      | 10                     |
+| Anil            | 4                      |
+|  Suresh         | 8                      |
+
+---
+**Query #3**
+
+    SELECT 
+    UPPER(department),
+    LOWER(city)
+    FROM employees;
+
+| UPPER(department) | LOWER(city) |
+| ----------------- | ----------- |
+| DATA ENGINEERING  | hyderabad   |
+| ANALYTICS         | bangalore   |
+| DATA SCIENCE      | chennai     |
+| DEVOPS            | pune        |
+| DATA ENGINEERING  |  hyderabad  |
+
+---
+**Query #4**
+
+    SELECT 
+    TRIM(full_name),
+    LTRIM(full_name),
+    RTRIM(full_name)
+    FROM employees;
+
+| TRIM(full_name) | LTRIM(full_name) | RTRIM(full_name) |
+| --------------- | ---------------- | ---------------- |
+| Karthik Kondpak | Karthik Kondpak  | Karthik Kondpak  |
+| Veena Reddy     | Veena Reddy      | Veena Reddy      |
+| Ravi kumar      | Ravi kumar       | Ravi kumar       |
+| Anil            | Anil             | Anil             |
+| Suresh          | Suresh           |  Suresh          |
+
+---
+**Query #5**
+
+    SELECT CONCAT(full_name,' - ',department) AS emp_details
+    FROM employees;
+
+| emp_details                        |
+| ---------------------------------- |
+| Karthik Kondpak - Data Engineering |
+| Veena Reddy - Analytics            |
+| Ravi kumar - Data Science          |
+| Anil - DEVOPS                      |
+|  Suresh  - data engineering        |
+
+---
+**Query #6**
+
+    SELECT CONCAT_WS(' | ',emp_id,full_name,city)
+    FROM employees;
+
+| CONCAT_WS(' | ',emp_id,full_name,city) |
+| -------------------------------------- |
+| 1 | Karthik Kondpak | Hyderabad        |
+| 2 | Veena Reddy | Bangalore            |
+| 3 | Ravi kumar | Chennai               |
+| 4 | Anil | Pune                        |
+| 5 |  Suresh  |  hyderabad              |
+
+---
+**Query #7**
+
+    SELECT SUBSTRING(email,1,7)
+    FROM employees;
+
+| SUBSTRING(email,1,7) |
+| -------------------- |
+| karthik              |
+| veena_r              |
+| ravi.ku              |
+| anil@ab              |
+| suresh@              |
+
+---
+**Query #8**
+
+    SELECT SUBSTR(email,1,5)
+    FROM employees;
+
+| SUBSTR(email,1,5) |
+| ----------------- |
+| karth             |
+| veena             |
+| ravi.             |
+| anil@             |
+| sures             |
+
+---
+**Query #9**
+
+    SELECT 
+    LEFT(full_name,4),
+    RIGHT(city,3)
+    FROM employees;
+
+| LEFT(full_name,4) | RIGHT(city,3) |
+| ----------------- | ------------- |
+| Kart              | bad           |
+| Veen              | ore           |
+| Ravi              | nai           |
+| Anil              | une           |
+|  Sur              | ad            |
+
+---
+**Query #10**
+
+    SELECT 
+    email,
+    INSTR(email,'@')
+    FROM employees;
+
+| email               | INSTR(email,'@') |
+| ------------------- | ---------------- |
+| karthik.k@gmail.com | 10               |
+| veena_r@company.com | 8                |
+| ravi.kumar@org.in   | 11               |
+| anil@abc.com        | 5                |
+| suresh@xyz.com      | 7                |
+
+---
+**Query #11**
+
+    SELECT 
+    email,
+    LOCATE('.',email)
+    FROM employees;
+
+| email               | LOCATE('.',email) |
+| ------------------- | ----------------- |
+| karthik.k@gmail.com | 8                 |
+| veena_r@company.com | 16                |
+| ravi.kumar@org.in   | 5                 |
+| anil@abc.com        | 9                 |
+| suresh@xyz.com      | 11                |
+
+---
+**Query #12**
+
+    SELECT REPLACE(department,'Data','Big Data')
+    FROM employees;
+
+| REPLACE(department,'Data','Big Data') |
+| ------------------------------------- |
+| Big Data Engineering                  |
+| Analytics                             |
+| Big Data Science                      |
+| DEVOPS                                |
+| data engineering                      |
+
+---
+**Query #13**
+
+    SELECT 
+    full_name,
+    REVERSE(full_name)
+    FROM employees;
+
+| full_name       | REVERSE(full_name) |
+| --------------- | ------------------ |
+| Karthik Kondpak | kapdnoK kihtraK    |
+| Veena Reddy     | yddeR aneeV        |
+| Ravi kumar      | ramuk ivaR         |
+| Anil            | linA               |
+|  Suresh         |  hseruS            |
+
+---
+**Query #14**
+
+    SELECT LPAD(emp_id,5,'0')
+    FROM employees;
+
+| LPAD(emp_id,5,'0') |
+| ------------------ |
+| 00001              |
+| 00002              |
+| 00003              |
+| 00004              |
+| 00005              |
+
+---
+**Query #15**
+
+    SELECT RPAD(city,15,'*')
+    FROM employees;
+
+| RPAD(city,15,'*') |
+| ----------------- |
+| Hyderabad******   |
+| Bangalore******   |
+| Chennai********   |
+| Pune***********   |
+|  hyderabad ****   |
+
+---
+**Query #16**
+
+    SELECT TRIM(REPLACE(city,' ',''))
+    FROM employees;
+
+| TRIM(REPLACE(city,' ','')) |
+| -------------------------- |
+| Hyderabad                  |
+| Bangalore                  |
+| Chennai                    |
+| Pune                       |
+| hyderabad                  |
+
+---
+**Query #17**
+
+    SELECT 
+    full_name,
+    IFNULL(remarks,'No remarks')
+    FROM employees;
+
+| full_name       | IFNULL(remarks,'No remarks') |
+| --------------- | ---------------------------- |
+| Karthik Kondpak |  Top performer               |
+| Veena Reddy     | Excellent communication      |
+| Ravi kumar      | Needs improvement            |
+| Anil            | No remarks                   |
+|  Suresh         |                              |
+
+---
+**Query #18**
+
+    SELECT 
+    full_name,
+    COALESCE(remarks,'N/A')
+    FROM employees;
+
+| full_name       | COALESCE(remarks,'N/A') |
+| --------------- | ----------------------- |
+| Karthik Kondpak |  Top performer          |
+| Veena Reddy     | Excellent communication |
+| Ravi kumar      | Needs improvement       |
+| Anil            | N/A                     |
+|  Suresh         |                         |
+
+---
+**Query #19**
+
+    SELECT FIND_IN_SET('Analytics','Data,Analytics,AI');
+
+| FIND_IN_SET('Analytics','Data,Analytics,AI') |
+| -------------------------------------------- |
+| 2                                            |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/)
