@@ -24,11 +24,11 @@ SELECT CURRENT_TIME();
 SELECT NOW(); -- current date + time
 SELECT CURRENT_TIMESTAMP;
 --1) DATE & TIMESTAMP DATA TYPES
-Type Stores
-DATE YYYY-MM-DD
-TIME HH:MM:SS
-DATETIME Date + time (no timezone)
-TIMESTAMP Date + time (timezone aware)
+-- Type Stores
+-- DATE YYYY-MM-DD
+-- TIME HH:MM:SS
+-- DATETIME Date + time (no timezone)
+-- TIMESTAMP Date + time (timezone aware)
 --2) EXTRACTING YEAR, MONTH, DAY
 SELECT
 YEAR(order_date),
@@ -55,9 +55,9 @@ WEEKDAY(order_date),
 DAYOFWEEK(order_date)
 FROM orders;
 --Difference
-Function Range Meaning
-WEEKDAY() 0–6 Monday = 0
-DAYOFWEEK() 1–7 Sunday = 1
+-- Function Range Meaning
+-- WEEKDAY() 0–6 Monday = 0
+-- DAYOFWEEK() 1–7 Sunday = 1
 --6) IDENTIFY WEEKENDS (SATURDAY & SUNDAY)
 --Method 1: Using DAYNAME
 SELECT order_id, order_date
