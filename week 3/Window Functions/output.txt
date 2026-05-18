@@ -1,1 +1,817 @@
 
+**Schema (MySQL v8)**
+
+    
+    CREATE TABLE employees (
+      emp_id     INT PRIMARY KEY,
+      emp_name   VARCHAR(50),
+      department VARCHAR(50),
+      salary     INT,
+      join_date  DATE
+    );
+    
+    INSERT INTO employees (emp_id, emp_name, department, salary, join_date) VALUES
+    (1,  'Amit',    'Chennai',   2000, '2023-01-01'),
+    (2,  'Ravi',    'Hyderabad', 1500, '2023-01-02'),
+    (3,  'Sneha',   'Chennai',   3000, '2023-01-03'),
+    (4,  'Kiran',   'Bangalore', 2500, '2023-01-04'),
+    (5,  'Priya',   'Chennai',   2000, '2023-01-05'),
+    (6,  'Arjun',   'Hyderabad', 1800, '2023-01-06'),
+    (7,  'Neha',    'Bangalore', 2200, '2023-01-07'),
+    (8,  'Vikas',   'Chennai',   3000, '2023-01-08'),
+    (9,  'Anjali',  'Hyderabad', 1700, '2023-01-09'),
+    (10, 'Rahul',   'Bangalore', 2600, '2023-01-10'),
+    (11, 'Suresh',  'Chennai',   2800, '2023-01-11'),
+    (12, 'Pooja',   'Hyderabad', 1600, '2023-01-12'),
+    (13, 'Manoj',   'Bangalore', 2400, '2023-01-13'),
+    (14, 'Divya',   'Chennai',   2100, '2023-01-14'),
+    (15, 'Karthik','Hyderabad', 1900, '2023-01-15'),
+    (16, 'Meena',   'Bangalore', 2300, '2023-01-16'),
+    (17, 'Raj',     'Chennai',   2700, '2023-01-17'),
+    (18, 'Simran',  'Hyderabad', 2000, '2023-01-18'),
+    (19, 'Deepak',  'Bangalore', 2500, '2023-01-19'),
+    (20, 'Nisha',   'Chennai',   2600, '2023-01-20');
+    
+    
+    CREATE TABLE orders (
+      order_id     INT PRIMARY KEY,
+      customer     VARCHAR(50),
+      city         VARCHAR(50),
+      order_amount INT,
+      order_date   DATE
+    );
+    
+    INSERT INTO orders (order_id, customer, city, order_amount, order_date) VALUES
+    (1,  'Amit',   'Chennai',   2000, '2023-01-01'),
+    (2,  'Ravi',   'Hyderabad', 1500, '2023-01-02'),
+    (3,  'Sneha',  'Chennai',   3000, '2023-01-03'),
+    (4,  'Kiran',  'Bangalore', 2500, '2023-01-04'),
+    (5,  'Priya',  'Chennai',   2000, '2023-01-05'),
+    (6,  'Arjun',  'Hyderabad', 1800, '2023-01-06'),
+    (7,  'Neha',   'Bangalore', 2200, '2023-01-07'),
+    (8,  'Vikas',  'Chennai',   3000, '2023-01-08'),
+    (9,  'Anjali', 'Hyderabad', 1700, '2023-01-09'),
+    (10, 'Rahul',  'Bangalore', 2600, '2023-01-10'),
+    (11, 'Suresh', 'Chennai',   2800, '2023-01-11'),
+    (12, 'Pooja',  'Hyderabad', 1600, '2023-01-12'),
+    (13, 'Manoj',  'Bangalore', 2400, '2023-01-13'),
+    (14, 'Divya',  'Chennai',   2100, '2023-01-14'),
+    (15, 'Karthik','Hyderabad', 1900, '2023-01-15'),
+    (16, 'Meena',  'Bangalore', 2300, '2023-01-16'),
+    (17, 'Raj',    'Chennai',   2700, '2023-01-17'),
+    (18, 'Simran', 'Hyderabad', 2000, '2023-01-18'),
+    (19, 'Deepak', 'Bangalore', 2500, '2023-01-19'),
+    (20, 'Nisha',  'Chennai',   2600, '2023-01-20');
+
+---
+
+**Query #1**
+
+    -- 1. Assign a unique row number to all employees based on salary (highest first)
+    SELECT *,
+    ROW_NUMBER() OVER(ORDER BY salary DESC) AS row_num
+    FROM employees;
+
+| emp_id | emp_name | department | salary | join_date  | row_num |
+| ------ | -------- | ---------- | ------ | ---------- | ------- |
+| 3      | Sneha    | Chennai    | 3000   | 2023-01-03 | 1       |
+| 8      | Vikas    | Chennai    | 3000   | 2023-01-08 | 2       |
+| 11     | Suresh   | Chennai    | 2800   | 2023-01-11 | 3       |
+| 17     | Raj      | Chennai    | 2700   | 2023-01-17 | 4       |
+| 20     | Nisha    | Chennai    | 2600   | 2023-01-20 | 5       |
+| 10     | Rahul    | Bangalore  | 2600   | 2023-01-10 | 6       |
+| 4      | Kiran    | Bangalore  | 2500   | 2023-01-04 | 7       |
+| 19     | Deepak   | Bangalore  | 2500   | 2023-01-19 | 8       |
+| 13     | Manoj    | Bangalore  | 2400   | 2023-01-13 | 9       |
+| 16     | Meena    | Bangalore  | 2300   | 2023-01-16 | 10      |
+| 7      | Neha     | Bangalore  | 2200   | 2023-01-07 | 11      |
+| 14     | Divya    | Chennai    | 2100   | 2023-01-14 | 12      |
+| 5      | Priya    | Chennai    | 2000   | 2023-01-05 | 13      |
+| 18     | Simran   | Hyderabad  | 2000   | 2023-01-18 | 14      |
+| 1      | Amit     | Chennai    | 2000   | 2023-01-01 | 15      |
+| 15     | Karthik  | Hyderabad  | 1900   | 2023-01-15 | 16      |
+| 6      | Arjun    | Hyderabad  | 1800   | 2023-01-06 | 17      |
+| 9      | Anjali   | Hyderabad  | 1700   | 2023-01-09 | 18      |
+| 12     | Pooja    | Hyderabad  | 1600   | 2023-01-12 | 19      |
+| 2      | Ravi     | Hyderabad  | 1500   | 2023-01-02 | 20      |
+
+---
+**Query #2**
+
+    -- 2. Assign row numbers to employees within each department based on salary descending
+    SELECT *,
+    ROW_NUMBER() OVER(PARTITION BY department ORDER BY salary DESC) AS row_num
+    FROM employees;
+
+| emp_id | emp_name | department | salary | join_date  | row_num |
+| ------ | -------- | ---------- | ------ | ---------- | ------- |
+| 10     | Rahul    | Bangalore  | 2600   | 2023-01-10 | 1       |
+| 19     | Deepak   | Bangalore  | 2500   | 2023-01-19 | 2       |
+| 4      | Kiran    | Bangalore  | 2500   | 2023-01-04 | 3       |
+| 13     | Manoj    | Bangalore  | 2400   | 2023-01-13 | 4       |
+| 16     | Meena    | Bangalore  | 2300   | 2023-01-16 | 5       |
+| 7      | Neha     | Bangalore  | 2200   | 2023-01-07 | 6       |
+| 3      | Sneha    | Chennai    | 3000   | 2023-01-03 | 1       |
+| 8      | Vikas    | Chennai    | 3000   | 2023-01-08 | 2       |
+| 11     | Suresh   | Chennai    | 2800   | 2023-01-11 | 3       |
+| 17     | Raj      | Chennai    | 2700   | 2023-01-17 | 4       |
+| 20     | Nisha    | Chennai    | 2600   | 2023-01-20 | 5       |
+| 14     | Divya    | Chennai    | 2100   | 2023-01-14 | 6       |
+| 5      | Priya    | Chennai    | 2000   | 2023-01-05 | 7       |
+| 1      | Amit     | Chennai    | 2000   | 2023-01-01 | 8       |
+| 18     | Simran   | Hyderabad  | 2000   | 2023-01-18 | 1       |
+| 15     | Karthik  | Hyderabad  | 1900   | 2023-01-15 | 2       |
+| 6      | Arjun    | Hyderabad  | 1800   | 2023-01-06 | 3       |
+| 9      | Anjali   | Hyderabad  | 1700   | 2023-01-09 | 4       |
+| 12     | Pooja    | Hyderabad  | 1600   | 2023-01-12 | 5       |
+| 2      | Ravi     | Hyderabad  | 1500   | 2023-01-02 | 6       |
+
+---
+**Query #3**
+
+    -- 3. Assign row numbers based on employee joining date (latest first)
+    SELECT *,
+    ROW_NUMBER() OVER(ORDER BY join_date DESC) AS row_num
+    FROM employees;
+
+| emp_id | emp_name | department | salary | join_date  | row_num |
+| ------ | -------- | ---------- | ------ | ---------- | ------- |
+| 20     | Nisha    | Chennai    | 2600   | 2023-01-20 | 1       |
+| 19     | Deepak   | Bangalore  | 2500   | 2023-01-19 | 2       |
+| 18     | Simran   | Hyderabad  | 2000   | 2023-01-18 | 3       |
+| 17     | Raj      | Chennai    | 2700   | 2023-01-17 | 4       |
+| 16     | Meena    | Bangalore  | 2300   | 2023-01-16 | 5       |
+| 15     | Karthik  | Hyderabad  | 1900   | 2023-01-15 | 6       |
+| 14     | Divya    | Chennai    | 2100   | 2023-01-14 | 7       |
+| 13     | Manoj    | Bangalore  | 2400   | 2023-01-13 | 8       |
+| 12     | Pooja    | Hyderabad  | 1600   | 2023-01-12 | 9       |
+| 11     | Suresh   | Chennai    | 2800   | 2023-01-11 | 10      |
+| 10     | Rahul    | Bangalore  | 2600   | 2023-01-10 | 11      |
+| 9      | Anjali   | Hyderabad  | 1700   | 2023-01-09 | 12      |
+| 8      | Vikas    | Chennai    | 3000   | 2023-01-08 | 13      |
+| 7      | Neha     | Bangalore  | 2200   | 2023-01-07 | 14      |
+| 6      | Arjun    | Hyderabad  | 1800   | 2023-01-06 | 15      |
+| 5      | Priya    | Chennai    | 2000   | 2023-01-05 | 16      |
+| 4      | Kiran    | Bangalore  | 2500   | 2023-01-04 | 17      |
+| 3      | Sneha    | Chennai    | 3000   | 2023-01-03 | 18      |
+| 2      | Ravi     | Hyderabad  | 1500   | 2023-01-02 | 19      |
+| 1      | Amit     | Chennai    | 2000   | 2023-01-01 | 20      |
+
+---
+**Query #4**
+
+    -- 4. Assign row numbers within each department based on earliest joining date
+    SELECT *,
+    ROW_NUMBER() OVER(PARTITION BY department ORDER BY join_date ASC) AS row_num
+    FROM employees;
+
+| emp_id | emp_name | department | salary | join_date  | row_num |
+| ------ | -------- | ---------- | ------ | ---------- | ------- |
+| 4      | Kiran    | Bangalore  | 2500   | 2023-01-04 | 1       |
+| 7      | Neha     | Bangalore  | 2200   | 2023-01-07 | 2       |
+| 10     | Rahul    | Bangalore  | 2600   | 2023-01-10 | 3       |
+| 13     | Manoj    | Bangalore  | 2400   | 2023-01-13 | 4       |
+| 16     | Meena    | Bangalore  | 2300   | 2023-01-16 | 5       |
+| 19     | Deepak   | Bangalore  | 2500   | 2023-01-19 | 6       |
+| 1      | Amit     | Chennai    | 2000   | 2023-01-01 | 1       |
+| 3      | Sneha    | Chennai    | 3000   | 2023-01-03 | 2       |
+| 5      | Priya    | Chennai    | 2000   | 2023-01-05 | 3       |
+| 8      | Vikas    | Chennai    | 3000   | 2023-01-08 | 4       |
+| 11     | Suresh   | Chennai    | 2800   | 2023-01-11 | 5       |
+| 14     | Divya    | Chennai    | 2100   | 2023-01-14 | 6       |
+| 17     | Raj      | Chennai    | 2700   | 2023-01-17 | 7       |
+| 20     | Nisha    | Chennai    | 2600   | 2023-01-20 | 8       |
+| 2      | Ravi     | Hyderabad  | 1500   | 2023-01-02 | 1       |
+| 6      | Arjun    | Hyderabad  | 1800   | 2023-01-06 | 2       |
+| 9      | Anjali   | Hyderabad  | 1700   | 2023-01-09 | 3       |
+| 12     | Pooja    | Hyderabad  | 1600   | 2023-01-12 | 4       |
+| 15     | Karthik  | Hyderabad  | 1900   | 2023-01-15 | 5       |
+| 18     | Simran   | Hyderabad  | 2000   | 2023-01-18 | 6       |
+
+---
+**Query #5**
+
+    -- 5. Assign row numbers to orders based on order date
+    SELECT *,
+    ROW_NUMBER() OVER(ORDER BY order_date) AS row_num
+    FROM orders;
+
+| order_id | customer | city      | order_amount | order_date | row_num |
+| -------- | -------- | --------- | ------------ | ---------- | ------- |
+| 1        | Amit     | Chennai   | 2000         | 2023-01-01 | 1       |
+| 2        | Ravi     | Hyderabad | 1500         | 2023-01-02 | 2       |
+| 3        | Sneha    | Chennai   | 3000         | 2023-01-03 | 3       |
+| 4        | Kiran    | Bangalore | 2500         | 2023-01-04 | 4       |
+| 5        | Priya    | Chennai   | 2000         | 2023-01-05 | 5       |
+| 6        | Arjun    | Hyderabad | 1800         | 2023-01-06 | 6       |
+| 7        | Neha     | Bangalore | 2200         | 2023-01-07 | 7       |
+| 8        | Vikas    | Chennai   | 3000         | 2023-01-08 | 8       |
+| 9        | Anjali   | Hyderabad | 1700         | 2023-01-09 | 9       |
+| 10       | Rahul    | Bangalore | 2600         | 2023-01-10 | 10      |
+| 11       | Suresh   | Chennai   | 2800         | 2023-01-11 | 11      |
+| 12       | Pooja    | Hyderabad | 1600         | 2023-01-12 | 12      |
+| 13       | Manoj    | Bangalore | 2400         | 2023-01-13 | 13      |
+| 14       | Divya    | Chennai   | 2100         | 2023-01-14 | 14      |
+| 15       | Karthik  | Hyderabad | 1900         | 2023-01-15 | 15      |
+| 16       | Meena    | Bangalore | 2300         | 2023-01-16 | 16      |
+| 17       | Raj      | Chennai   | 2700         | 2023-01-17 | 17      |
+| 18       | Simran   | Hyderabad | 2000         | 2023-01-18 | 18      |
+| 19       | Deepak   | Bangalore | 2500         | 2023-01-19 | 19      |
+| 20       | Nisha    | Chennai   | 2600         | 2023-01-20 | 20      |
+
+---
+**Query #6**
+
+    -- 6. Assign row numbers to orders within each city based on order amount (highest first)
+    SELECT *,
+    ROW_NUMBER() OVER(PARTITION BY city ORDER BY order_amount DESC) AS row_num
+    FROM orders;
+
+| order_id | customer | city      | order_amount | order_date | row_num |
+| -------- | -------- | --------- | ------------ | ---------- | ------- |
+| 10       | Rahul    | Bangalore | 2600         | 2023-01-10 | 1       |
+| 19       | Deepak   | Bangalore | 2500         | 2023-01-19 | 2       |
+| 4        | Kiran    | Bangalore | 2500         | 2023-01-04 | 3       |
+| 13       | Manoj    | Bangalore | 2400         | 2023-01-13 | 4       |
+| 16       | Meena    | Bangalore | 2300         | 2023-01-16 | 5       |
+| 7        | Neha     | Bangalore | 2200         | 2023-01-07 | 6       |
+| 3        | Sneha    | Chennai   | 3000         | 2023-01-03 | 1       |
+| 8        | Vikas    | Chennai   | 3000         | 2023-01-08 | 2       |
+| 11       | Suresh   | Chennai   | 2800         | 2023-01-11 | 3       |
+| 17       | Raj      | Chennai   | 2700         | 2023-01-17 | 4       |
+| 20       | Nisha    | Chennai   | 2600         | 2023-01-20 | 5       |
+| 14       | Divya    | Chennai   | 2100         | 2023-01-14 | 6       |
+| 5        | Priya    | Chennai   | 2000         | 2023-01-05 | 7       |
+| 1        | Amit     | Chennai   | 2000         | 2023-01-01 | 8       |
+| 18       | Simran   | Hyderabad | 2000         | 2023-01-18 | 1       |
+| 15       | Karthik  | Hyderabad | 1900         | 2023-01-15 | 2       |
+| 6        | Arjun    | Hyderabad | 1800         | 2023-01-06 | 3       |
+| 9        | Anjali   | Hyderabad | 1700         | 2023-01-09 | 4       |
+| 12       | Pooja    | Hyderabad | 1600         | 2023-01-12 | 5       |
+| 2        | Ravi     | Hyderabad | 1500         | 2023-01-02 | 6       |
+
+---
+**Query #7**
+
+    -- 7. Assign row numbers to employees based on salary (lowest first)
+    SELECT *,
+    ROW_NUMBER() OVER(ORDER BY salary ASC) AS row_num
+    FROM employees;
+
+| emp_id | emp_name | department | salary | join_date  | row_num |
+| ------ | -------- | ---------- | ------ | ---------- | ------- |
+| 2      | Ravi     | Hyderabad  | 1500   | 2023-01-02 | 1       |
+| 12     | Pooja    | Hyderabad  | 1600   | 2023-01-12 | 2       |
+| 9      | Anjali   | Hyderabad  | 1700   | 2023-01-09 | 3       |
+| 6      | Arjun    | Hyderabad  | 1800   | 2023-01-06 | 4       |
+| 15     | Karthik  | Hyderabad  | 1900   | 2023-01-15 | 5       |
+| 1      | Amit     | Chennai    | 2000   | 2023-01-01 | 6       |
+| 5      | Priya    | Chennai    | 2000   | 2023-01-05 | 7       |
+| 18     | Simran   | Hyderabad  | 2000   | 2023-01-18 | 8       |
+| 14     | Divya    | Chennai    | 2100   | 2023-01-14 | 9       |
+| 7      | Neha     | Bangalore  | 2200   | 2023-01-07 | 10      |
+| 16     | Meena    | Bangalore  | 2300   | 2023-01-16 | 11      |
+| 13     | Manoj    | Bangalore  | 2400   | 2023-01-13 | 12      |
+| 4      | Kiran    | Bangalore  | 2500   | 2023-01-04 | 13      |
+| 19     | Deepak   | Bangalore  | 2500   | 2023-01-19 | 14      |
+| 20     | Nisha    | Chennai    | 2600   | 2023-01-20 | 15      |
+| 10     | Rahul    | Bangalore  | 2600   | 2023-01-10 | 16      |
+| 17     | Raj      | Chennai    | 2700   | 2023-01-17 | 17      |
+| 11     | Suresh   | Chennai    | 2800   | 2023-01-11 | 18      |
+| 8      | Vikas    | Chennai    | 3000   | 2023-01-08 | 19      |
+| 3      | Sneha    | Chennai    | 3000   | 2023-01-03 | 20      |
+
+---
+**Query #8**
+
+    -- 8. Assign row numbers within department for employees based on name alphabetically
+    SELECT *,
+    ROW_NUMBER() OVER(PARTITION BY department ORDER BY emp_name ASC) AS row_num
+    FROM employees;
+
+| emp_id | emp_name | department | salary | join_date  | row_num |
+| ------ | -------- | ---------- | ------ | ---------- | ------- |
+| 19     | Deepak   | Bangalore  | 2500   | 2023-01-19 | 1       |
+| 4      | Kiran    | Bangalore  | 2500   | 2023-01-04 | 2       |
+| 13     | Manoj    | Bangalore  | 2400   | 2023-01-13 | 3       |
+| 16     | Meena    | Bangalore  | 2300   | 2023-01-16 | 4       |
+| 7      | Neha     | Bangalore  | 2200   | 2023-01-07 | 5       |
+| 10     | Rahul    | Bangalore  | 2600   | 2023-01-10 | 6       |
+| 1      | Amit     | Chennai    | 2000   | 2023-01-01 | 1       |
+| 14     | Divya    | Chennai    | 2100   | 2023-01-14 | 2       |
+| 20     | Nisha    | Chennai    | 2600   | 2023-01-20 | 3       |
+| 5      | Priya    | Chennai    | 2000   | 2023-01-05 | 4       |
+| 17     | Raj      | Chennai    | 2700   | 2023-01-17 | 5       |
+| 3      | Sneha    | Chennai    | 3000   | 2023-01-03 | 6       |
+| 11     | Suresh   | Chennai    | 2800   | 2023-01-11 | 7       |
+| 8      | Vikas    | Chennai    | 3000   | 2023-01-08 | 8       |
+| 9      | Anjali   | Hyderabad  | 1700   | 2023-01-09 | 1       |
+| 6      | Arjun    | Hyderabad  | 1800   | 2023-01-06 | 2       |
+| 15     | Karthik  | Hyderabad  | 1900   | 2023-01-15 | 3       |
+| 12     | Pooja    | Hyderabad  | 1600   | 2023-01-12 | 4       |
+| 2      | Ravi     | Hyderabad  | 1500   | 2023-01-02 | 5       |
+| 18     | Simran   | Hyderabad  | 2000   | 2023-01-18 | 6       |
+
+---
+**Query #9**
+
+    -- 🔹 RANK() ONLY Questions
+    
+    -- 9. Rank all employees based on salary (highest first)
+    SELECT *,
+    RANK() OVER(ORDER BY salary DESC) AS rank_num
+    FROM employees;
+
+| emp_id | emp_name | department | salary | join_date  | rank_num |
+| ------ | -------- | ---------- | ------ | ---------- | -------- |
+| 3      | Sneha    | Chennai    | 3000   | 2023-01-03 | 1        |
+| 8      | Vikas    | Chennai    | 3000   | 2023-01-08 | 1        |
+| 11     | Suresh   | Chennai    | 2800   | 2023-01-11 | 3        |
+| 17     | Raj      | Chennai    | 2700   | 2023-01-17 | 4        |
+| 20     | Nisha    | Chennai    | 2600   | 2023-01-20 | 5        |
+| 10     | Rahul    | Bangalore  | 2600   | 2023-01-10 | 5        |
+| 4      | Kiran    | Bangalore  | 2500   | 2023-01-04 | 7        |
+| 19     | Deepak   | Bangalore  | 2500   | 2023-01-19 | 7        |
+| 13     | Manoj    | Bangalore  | 2400   | 2023-01-13 | 9        |
+| 16     | Meena    | Bangalore  | 2300   | 2023-01-16 | 10       |
+| 7      | Neha     | Bangalore  | 2200   | 2023-01-07 | 11       |
+| 14     | Divya    | Chennai    | 2100   | 2023-01-14 | 12       |
+| 5      | Priya    | Chennai    | 2000   | 2023-01-05 | 13       |
+| 18     | Simran   | Hyderabad  | 2000   | 2023-01-18 | 13       |
+| 1      | Amit     | Chennai    | 2000   | 2023-01-01 | 13       |
+| 15     | Karthik  | Hyderabad  | 1900   | 2023-01-15 | 16       |
+| 6      | Arjun    | Hyderabad  | 1800   | 2023-01-06 | 17       |
+| 9      | Anjali   | Hyderabad  | 1700   | 2023-01-09 | 18       |
+| 12     | Pooja    | Hyderabad  | 1600   | 2023-01-12 | 19       |
+| 2      | Ravi     | Hyderabad  | 1500   | 2023-01-02 | 20       |
+
+---
+**Query #10**
+
+    -- 10. Rank employees within each department based on salary
+    SELECT *,
+    RANK() OVER(PARTITION BY department ORDER BY salary DESC) AS rank_num
+    FROM employees;
+
+| emp_id | emp_name | department | salary | join_date  | rank_num |
+| ------ | -------- | ---------- | ------ | ---------- | -------- |
+| 10     | Rahul    | Bangalore  | 2600   | 2023-01-10 | 1        |
+| 19     | Deepak   | Bangalore  | 2500   | 2023-01-19 | 2        |
+| 4      | Kiran    | Bangalore  | 2500   | 2023-01-04 | 2        |
+| 13     | Manoj    | Bangalore  | 2400   | 2023-01-13 | 4        |
+| 16     | Meena    | Bangalore  | 2300   | 2023-01-16 | 5        |
+| 7      | Neha     | Bangalore  | 2200   | 2023-01-07 | 6        |
+| 3      | Sneha    | Chennai    | 3000   | 2023-01-03 | 1        |
+| 8      | Vikas    | Chennai    | 3000   | 2023-01-08 | 1        |
+| 11     | Suresh   | Chennai    | 2800   | 2023-01-11 | 3        |
+| 17     | Raj      | Chennai    | 2700   | 2023-01-17 | 4        |
+| 20     | Nisha    | Chennai    | 2600   | 2023-01-20 | 5        |
+| 14     | Divya    | Chennai    | 2100   | 2023-01-14 | 6        |
+| 5      | Priya    | Chennai    | 2000   | 2023-01-05 | 7        |
+| 1      | Amit     | Chennai    | 2000   | 2023-01-01 | 7        |
+| 18     | Simran   | Hyderabad  | 2000   | 2023-01-18 | 1        |
+| 15     | Karthik  | Hyderabad  | 1900   | 2023-01-15 | 2        |
+| 6      | Arjun    | Hyderabad  | 1800   | 2023-01-06 | 3        |
+| 9      | Anjali   | Hyderabad  | 1700   | 2023-01-09 | 4        |
+| 12     | Pooja    | Hyderabad  | 1600   | 2023-01-12 | 5        |
+| 2      | Ravi     | Hyderabad  | 1500   | 2023-01-02 | 6        |
+
+---
+**Query #11**
+
+    -- 11. Rank employees based on joining date (latest gets rank 1)
+    SELECT *,
+    RANK() OVER(ORDER BY join_date DESC) AS rank_num
+    FROM employees;
+
+| emp_id | emp_name | department | salary | join_date  | rank_num |
+| ------ | -------- | ---------- | ------ | ---------- | -------- |
+| 20     | Nisha    | Chennai    | 2600   | 2023-01-20 | 1        |
+| 19     | Deepak   | Bangalore  | 2500   | 2023-01-19 | 2        |
+| 18     | Simran   | Hyderabad  | 2000   | 2023-01-18 | 3        |
+| 17     | Raj      | Chennai    | 2700   | 2023-01-17 | 4        |
+| 16     | Meena    | Bangalore  | 2300   | 2023-01-16 | 5        |
+| 15     | Karthik  | Hyderabad  | 1900   | 2023-01-15 | 6        |
+| 14     | Divya    | Chennai    | 2100   | 2023-01-14 | 7        |
+| 13     | Manoj    | Bangalore  | 2400   | 2023-01-13 | 8        |
+| 12     | Pooja    | Hyderabad  | 1600   | 2023-01-12 | 9        |
+| 11     | Suresh   | Chennai    | 2800   | 2023-01-11 | 10       |
+| 10     | Rahul    | Bangalore  | 2600   | 2023-01-10 | 11       |
+| 9      | Anjali   | Hyderabad  | 1700   | 2023-01-09 | 12       |
+| 8      | Vikas    | Chennai    | 3000   | 2023-01-08 | 13       |
+| 7      | Neha     | Bangalore  | 2200   | 2023-01-07 | 14       |
+| 6      | Arjun    | Hyderabad  | 1800   | 2023-01-06 | 15       |
+| 5      | Priya    | Chennai    | 2000   | 2023-01-05 | 16       |
+| 4      | Kiran    | Bangalore  | 2500   | 2023-01-04 | 17       |
+| 3      | Sneha    | Chennai    | 3000   | 2023-01-03 | 18       |
+| 2      | Ravi     | Hyderabad  | 1500   | 2023-01-02 | 19       |
+| 1      | Amit     | Chennai    | 2000   | 2023-01-01 | 20       |
+
+---
+**Query #12**
+
+    -- 12. Rank orders based on order amount (highest first)
+    SELECT *,
+    RANK() OVER(ORDER BY order_amount DESC) AS rank_num
+    FROM orders;
+
+| order_id | customer | city      | order_amount | order_date | rank_num |
+| -------- | -------- | --------- | ------------ | ---------- | -------- |
+| 3        | Sneha    | Chennai   | 3000         | 2023-01-03 | 1        |
+| 8        | Vikas    | Chennai   | 3000         | 2023-01-08 | 1        |
+| 11       | Suresh   | Chennai   | 2800         | 2023-01-11 | 3        |
+| 17       | Raj      | Chennai   | 2700         | 2023-01-17 | 4        |
+| 20       | Nisha    | Chennai   | 2600         | 2023-01-20 | 5        |
+| 10       | Rahul    | Bangalore | 2600         | 2023-01-10 | 5        |
+| 4        | Kiran    | Bangalore | 2500         | 2023-01-04 | 7        |
+| 19       | Deepak   | Bangalore | 2500         | 2023-01-19 | 7        |
+| 13       | Manoj    | Bangalore | 2400         | 2023-01-13 | 9        |
+| 16       | Meena    | Bangalore | 2300         | 2023-01-16 | 10       |
+| 7        | Neha     | Bangalore | 2200         | 2023-01-07 | 11       |
+| 14       | Divya    | Chennai   | 2100         | 2023-01-14 | 12       |
+| 5        | Priya    | Chennai   | 2000         | 2023-01-05 | 13       |
+| 18       | Simran   | Hyderabad | 2000         | 2023-01-18 | 13       |
+| 1        | Amit     | Chennai   | 2000         | 2023-01-01 | 13       |
+| 15       | Karthik  | Hyderabad | 1900         | 2023-01-15 | 16       |
+| 6        | Arjun    | Hyderabad | 1800         | 2023-01-06 | 17       |
+| 9        | Anjali   | Hyderabad | 1700         | 2023-01-09 | 18       |
+| 12       | Pooja    | Hyderabad | 1600         | 2023-01-12 | 19       |
+| 2        | Ravi     | Hyderabad | 1500         | 2023-01-02 | 20       |
+
+---
+**Query #13**
+
+    -- 13. Rank orders within each city based on order amount
+    SELECT *,
+    RANK() OVER(PARTITION BY city ORDER BY order_amount DESC) AS rank_num
+    FROM orders;
+
+| order_id | customer | city      | order_amount | order_date | rank_num |
+| -------- | -------- | --------- | ------------ | ---------- | -------- |
+| 10       | Rahul    | Bangalore | 2600         | 2023-01-10 | 1        |
+| 19       | Deepak   | Bangalore | 2500         | 2023-01-19 | 2        |
+| 4        | Kiran    | Bangalore | 2500         | 2023-01-04 | 2        |
+| 13       | Manoj    | Bangalore | 2400         | 2023-01-13 | 4        |
+| 16       | Meena    | Bangalore | 2300         | 2023-01-16 | 5        |
+| 7        | Neha     | Bangalore | 2200         | 2023-01-07 | 6        |
+| 3        | Sneha    | Chennai   | 3000         | 2023-01-03 | 1        |
+| 8        | Vikas    | Chennai   | 3000         | 2023-01-08 | 1        |
+| 11       | Suresh   | Chennai   | 2800         | 2023-01-11 | 3        |
+| 17       | Raj      | Chennai   | 2700         | 2023-01-17 | 4        |
+| 20       | Nisha    | Chennai   | 2600         | 2023-01-20 | 5        |
+| 14       | Divya    | Chennai   | 2100         | 2023-01-14 | 6        |
+| 5        | Priya    | Chennai   | 2000         | 2023-01-05 | 7        |
+| 1        | Amit     | Chennai   | 2000         | 2023-01-01 | 7        |
+| 18       | Simran   | Hyderabad | 2000         | 2023-01-18 | 1        |
+| 15       | Karthik  | Hyderabad | 1900         | 2023-01-15 | 2        |
+| 6        | Arjun    | Hyderabad | 1800         | 2023-01-06 | 3        |
+| 9        | Anjali   | Hyderabad | 1700         | 2023-01-09 | 4        |
+| 12       | Pooja    | Hyderabad | 1600         | 2023-01-12 | 5        |
+| 2        | Ravi     | Hyderabad | 1500         | 2023-01-02 | 6        |
+
+---
+**Query #14**
+
+    -- 14. Rank employees within department based on salary (lowest first)
+    SELECT *,
+    RANK() OVER(PARTITION BY department ORDER BY salary ASC) AS rank_num
+    FROM employees;
+
+| emp_id | emp_name | department | salary | join_date  | rank_num |
+| ------ | -------- | ---------- | ------ | ---------- | -------- |
+| 7      | Neha     | Bangalore  | 2200   | 2023-01-07 | 1        |
+| 16     | Meena    | Bangalore  | 2300   | 2023-01-16 | 2        |
+| 13     | Manoj    | Bangalore  | 2400   | 2023-01-13 | 3        |
+| 19     | Deepak   | Bangalore  | 2500   | 2023-01-19 | 4        |
+| 4      | Kiran    | Bangalore  | 2500   | 2023-01-04 | 4        |
+| 10     | Rahul    | Bangalore  | 2600   | 2023-01-10 | 6        |
+| 5      | Priya    | Chennai    | 2000   | 2023-01-05 | 1        |
+| 1      | Amit     | Chennai    | 2000   | 2023-01-01 | 1        |
+| 14     | Divya    | Chennai    | 2100   | 2023-01-14 | 3        |
+| 20     | Nisha    | Chennai    | 2600   | 2023-01-20 | 4        |
+| 17     | Raj      | Chennai    | 2700   | 2023-01-17 | 5        |
+| 11     | Suresh   | Chennai    | 2800   | 2023-01-11 | 6        |
+| 8      | Vikas    | Chennai    | 3000   | 2023-01-08 | 7        |
+| 3      | Sneha    | Chennai    | 3000   | 2023-01-03 | 7        |
+| 2      | Ravi     | Hyderabad  | 1500   | 2023-01-02 | 1        |
+| 12     | Pooja    | Hyderabad  | 1600   | 2023-01-12 | 2        |
+| 9      | Anjali   | Hyderabad  | 1700   | 2023-01-09 | 3        |
+| 6      | Arjun    | Hyderabad  | 1800   | 2023-01-06 | 4        |
+| 15     | Karthik  | Hyderabad  | 1900   | 2023-01-15 | 5        |
+| 18     | Simran   | Hyderabad  | 2000   | 2023-01-18 | 6        |
+
+---
+**Query #15**
+
+    -- 15. Rank employees based on name alphabetically
+    SELECT *,
+    RANK() OVER(ORDER BY emp_name ASC) AS rank_num
+    FROM employees;
+
+| emp_id | emp_name | department | salary | join_date  | rank_num |
+| ------ | -------- | ---------- | ------ | ---------- | -------- |
+| 1      | Amit     | Chennai    | 2000   | 2023-01-01 | 1        |
+| 9      | Anjali   | Hyderabad  | 1700   | 2023-01-09 | 2        |
+| 6      | Arjun    | Hyderabad  | 1800   | 2023-01-06 | 3        |
+| 19     | Deepak   | Bangalore  | 2500   | 2023-01-19 | 4        |
+| 14     | Divya    | Chennai    | 2100   | 2023-01-14 | 5        |
+| 15     | Karthik  | Hyderabad  | 1900   | 2023-01-15 | 6        |
+| 4      | Kiran    | Bangalore  | 2500   | 2023-01-04 | 7        |
+| 13     | Manoj    | Bangalore  | 2400   | 2023-01-13 | 8        |
+| 16     | Meena    | Bangalore  | 2300   | 2023-01-16 | 9        |
+| 7      | Neha     | Bangalore  | 2200   | 2023-01-07 | 10       |
+| 20     | Nisha    | Chennai    | 2600   | 2023-01-20 | 11       |
+| 12     | Pooja    | Hyderabad  | 1600   | 2023-01-12 | 12       |
+| 5      | Priya    | Chennai    | 2000   | 2023-01-05 | 13       |
+| 10     | Rahul    | Bangalore  | 2600   | 2023-01-10 | 14       |
+| 17     | Raj      | Chennai    | 2700   | 2023-01-17 | 15       |
+| 2      | Ravi     | Hyderabad  | 1500   | 2023-01-02 | 16       |
+| 18     | Simran   | Hyderabad  | 2000   | 2023-01-18 | 17       |
+| 3      | Sneha    | Chennai    | 3000   | 2023-01-03 | 18       |
+| 11     | Suresh   | Chennai    | 2800   | 2023-01-11 | 19       |
+| 8      | Vikas    | Chennai    | 3000   | 2023-01-08 | 20       |
+
+---
+**Query #16**
+
+    -- 16. Rank orders within each city based on order date
+    SELECT *,
+    RANK() OVER(PARTITION BY city ORDER BY order_date ASC) AS rank_num
+    FROM orders;
+
+| order_id | customer | city      | order_amount | order_date | rank_num |
+| -------- | -------- | --------- | ------------ | ---------- | -------- |
+| 4        | Kiran    | Bangalore | 2500         | 2023-01-04 | 1        |
+| 7        | Neha     | Bangalore | 2200         | 2023-01-07 | 2        |
+| 10       | Rahul    | Bangalore | 2600         | 2023-01-10 | 3        |
+| 13       | Manoj    | Bangalore | 2400         | 2023-01-13 | 4        |
+| 16       | Meena    | Bangalore | 2300         | 2023-01-16 | 5        |
+| 19       | Deepak   | Bangalore | 2500         | 2023-01-19 | 6        |
+| 1        | Amit     | Chennai   | 2000         | 2023-01-01 | 1        |
+| 3        | Sneha    | Chennai   | 3000         | 2023-01-03 | 2        |
+| 5        | Priya    | Chennai   | 2000         | 2023-01-05 | 3        |
+| 8        | Vikas    | Chennai   | 3000         | 2023-01-08 | 4        |
+| 11       | Suresh   | Chennai   | 2800         | 2023-01-11 | 5        |
+| 14       | Divya    | Chennai   | 2100         | 2023-01-14 | 6        |
+| 17       | Raj      | Chennai   | 2700         | 2023-01-17 | 7        |
+| 20       | Nisha    | Chennai   | 2600         | 2023-01-20 | 8        |
+| 2        | Ravi     | Hyderabad | 1500         | 2023-01-02 | 1        |
+| 6        | Arjun    | Hyderabad | 1800         | 2023-01-06 | 2        |
+| 9        | Anjali   | Hyderabad | 1700         | 2023-01-09 | 3        |
+| 12       | Pooja    | Hyderabad | 1600         | 2023-01-12 | 4        |
+| 15       | Karthik  | Hyderabad | 1900         | 2023-01-15 | 5        |
+| 18       | Simran   | Hyderabad | 2000         | 2023-01-18 | 6        |
+
+---
+**Query #17**
+
+    -- 🔹 DENSE_RANK() ONLY Questions
+    
+    -- 17. Assign dense rank to employees based on salary (highest first)
+    SELECT *,
+    DENSE_RANK() OVER(ORDER BY salary DESC) AS dense_rank_num
+    FROM employees;
+
+| emp_id | emp_name | department | salary | join_date  | dense_rank_num |
+| ------ | -------- | ---------- | ------ | ---------- | -------------- |
+| 3      | Sneha    | Chennai    | 3000   | 2023-01-03 | 1              |
+| 8      | Vikas    | Chennai    | 3000   | 2023-01-08 | 1              |
+| 11     | Suresh   | Chennai    | 2800   | 2023-01-11 | 2              |
+| 17     | Raj      | Chennai    | 2700   | 2023-01-17 | 3              |
+| 20     | Nisha    | Chennai    | 2600   | 2023-01-20 | 4              |
+| 10     | Rahul    | Bangalore  | 2600   | 2023-01-10 | 4              |
+| 4      | Kiran    | Bangalore  | 2500   | 2023-01-04 | 5              |
+| 19     | Deepak   | Bangalore  | 2500   | 2023-01-19 | 5              |
+| 13     | Manoj    | Bangalore  | 2400   | 2023-01-13 | 6              |
+| 16     | Meena    | Bangalore  | 2300   | 2023-01-16 | 7              |
+| 7      | Neha     | Bangalore  | 2200   | 2023-01-07 | 8              |
+| 14     | Divya    | Chennai    | 2100   | 2023-01-14 | 9              |
+| 5      | Priya    | Chennai    | 2000   | 2023-01-05 | 10             |
+| 18     | Simran   | Hyderabad  | 2000   | 2023-01-18 | 10             |
+| 1      | Amit     | Chennai    | 2000   | 2023-01-01 | 10             |
+| 15     | Karthik  | Hyderabad  | 1900   | 2023-01-15 | 11             |
+| 6      | Arjun    | Hyderabad  | 1800   | 2023-01-06 | 12             |
+| 9      | Anjali   | Hyderabad  | 1700   | 2023-01-09 | 13             |
+| 12     | Pooja    | Hyderabad  | 1600   | 2023-01-12 | 14             |
+| 2      | Ravi     | Hyderabad  | 1500   | 2023-01-02 | 15             |
+
+---
+**Query #18**
+
+    -- 18. Assign dense rank within each department based on salary
+    SELECT *,
+    DENSE_RANK() OVER(PARTITION BY department ORDER BY salary DESC) AS dense_rank_num
+    FROM employees;
+
+| emp_id | emp_name | department | salary | join_date  | dense_rank_num |
+| ------ | -------- | ---------- | ------ | ---------- | -------------- |
+| 10     | Rahul    | Bangalore  | 2600   | 2023-01-10 | 1              |
+| 19     | Deepak   | Bangalore  | 2500   | 2023-01-19 | 2              |
+| 4      | Kiran    | Bangalore  | 2500   | 2023-01-04 | 2              |
+| 13     | Manoj    | Bangalore  | 2400   | 2023-01-13 | 3              |
+| 16     | Meena    | Bangalore  | 2300   | 2023-01-16 | 4              |
+| 7      | Neha     | Bangalore  | 2200   | 2023-01-07 | 5              |
+| 3      | Sneha    | Chennai    | 3000   | 2023-01-03 | 1              |
+| 8      | Vikas    | Chennai    | 3000   | 2023-01-08 | 1              |
+| 11     | Suresh   | Chennai    | 2800   | 2023-01-11 | 2              |
+| 17     | Raj      | Chennai    | 2700   | 2023-01-17 | 3              |
+| 20     | Nisha    | Chennai    | 2600   | 2023-01-20 | 4              |
+| 14     | Divya    | Chennai    | 2100   | 2023-01-14 | 5              |
+| 5      | Priya    | Chennai    | 2000   | 2023-01-05 | 6              |
+| 1      | Amit     | Chennai    | 2000   | 2023-01-01 | 6              |
+| 18     | Simran   | Hyderabad  | 2000   | 2023-01-18 | 1              |
+| 15     | Karthik  | Hyderabad  | 1900   | 2023-01-15 | 2              |
+| 6      | Arjun    | Hyderabad  | 1800   | 2023-01-06 | 3              |
+| 9      | Anjali   | Hyderabad  | 1700   | 2023-01-09 | 4              |
+| 12     | Pooja    | Hyderabad  | 1600   | 2023-01-12 | 5              |
+| 2      | Ravi     | Hyderabad  | 1500   | 2023-01-02 | 6              |
+
+---
+**Query #19**
+
+    -- 19. Assign dense rank to employees based on joining date
+    SELECT *,
+    DENSE_RANK() OVER(ORDER BY join_date DESC) AS dense_rank_num
+    FROM employees;
+
+| emp_id | emp_name | department | salary | join_date  | dense_rank_num |
+| ------ | -------- | ---------- | ------ | ---------- | -------------- |
+| 20     | Nisha    | Chennai    | 2600   | 2023-01-20 | 1              |
+| 19     | Deepak   | Bangalore  | 2500   | 2023-01-19 | 2              |
+| 18     | Simran   | Hyderabad  | 2000   | 2023-01-18 | 3              |
+| 17     | Raj      | Chennai    | 2700   | 2023-01-17 | 4              |
+| 16     | Meena    | Bangalore  | 2300   | 2023-01-16 | 5              |
+| 15     | Karthik  | Hyderabad  | 1900   | 2023-01-15 | 6              |
+| 14     | Divya    | Chennai    | 2100   | 2023-01-14 | 7              |
+| 13     | Manoj    | Bangalore  | 2400   | 2023-01-13 | 8              |
+| 12     | Pooja    | Hyderabad  | 1600   | 2023-01-12 | 9              |
+| 11     | Suresh   | Chennai    | 2800   | 2023-01-11 | 10             |
+| 10     | Rahul    | Bangalore  | 2600   | 2023-01-10 | 11             |
+| 9      | Anjali   | Hyderabad  | 1700   | 2023-01-09 | 12             |
+| 8      | Vikas    | Chennai    | 3000   | 2023-01-08 | 13             |
+| 7      | Neha     | Bangalore  | 2200   | 2023-01-07 | 14             |
+| 6      | Arjun    | Hyderabad  | 1800   | 2023-01-06 | 15             |
+| 5      | Priya    | Chennai    | 2000   | 2023-01-05 | 16             |
+| 4      | Kiran    | Bangalore  | 2500   | 2023-01-04 | 17             |
+| 3      | Sneha    | Chennai    | 3000   | 2023-01-03 | 18             |
+| 2      | Ravi     | Hyderabad  | 1500   | 2023-01-02 | 19             |
+| 1      | Amit     | Chennai    | 2000   | 2023-01-01 | 20             |
+
+---
+**Query #20**
+
+    -- 20. Assign dense rank to orders based on order amount
+    SELECT *,
+    DENSE_RANK() OVER(ORDER BY order_amount DESC) AS dense_rank_num
+    FROM orders;
+
+| order_id | customer | city      | order_amount | order_date | dense_rank_num |
+| -------- | -------- | --------- | ------------ | ---------- | -------------- |
+| 3        | Sneha    | Chennai   | 3000         | 2023-01-03 | 1              |
+| 8        | Vikas    | Chennai   | 3000         | 2023-01-08 | 1              |
+| 11       | Suresh   | Chennai   | 2800         | 2023-01-11 | 2              |
+| 17       | Raj      | Chennai   | 2700         | 2023-01-17 | 3              |
+| 20       | Nisha    | Chennai   | 2600         | 2023-01-20 | 4              |
+| 10       | Rahul    | Bangalore | 2600         | 2023-01-10 | 4              |
+| 4        | Kiran    | Bangalore | 2500         | 2023-01-04 | 5              |
+| 19       | Deepak   | Bangalore | 2500         | 2023-01-19 | 5              |
+| 13       | Manoj    | Bangalore | 2400         | 2023-01-13 | 6              |
+| 16       | Meena    | Bangalore | 2300         | 2023-01-16 | 7              |
+| 7        | Neha     | Bangalore | 2200         | 2023-01-07 | 8              |
+| 14       | Divya    | Chennai   | 2100         | 2023-01-14 | 9              |
+| 5        | Priya    | Chennai   | 2000         | 2023-01-05 | 10             |
+| 18       | Simran   | Hyderabad | 2000         | 2023-01-18 | 10             |
+| 1        | Amit     | Chennai   | 2000         | 2023-01-01 | 10             |
+| 15       | Karthik  | Hyderabad | 1900         | 2023-01-15 | 11             |
+| 6        | Arjun    | Hyderabad | 1800         | 2023-01-06 | 12             |
+| 9        | Anjali   | Hyderabad | 1700         | 2023-01-09 | 13             |
+| 12       | Pooja    | Hyderabad | 1600         | 2023-01-12 | 14             |
+| 2        | Ravi     | Hyderabad | 1500         | 2023-01-02 | 15             |
+
+---
+**Query #21**
+
+    -- 21. Assign dense rank within each city based on order amount
+    SELECT *,
+    DENSE_RANK() OVER(PARTITION BY city ORDER BY order_amount DESC) AS dense_rank_num
+    FROM orders;
+
+| order_id | customer | city      | order_amount | order_date | dense_rank_num |
+| -------- | -------- | --------- | ------------ | ---------- | -------------- |
+| 10       | Rahul    | Bangalore | 2600         | 2023-01-10 | 1              |
+| 19       | Deepak   | Bangalore | 2500         | 2023-01-19 | 2              |
+| 4        | Kiran    | Bangalore | 2500         | 2023-01-04 | 2              |
+| 13       | Manoj    | Bangalore | 2400         | 2023-01-13 | 3              |
+| 16       | Meena    | Bangalore | 2300         | 2023-01-16 | 4              |
+| 7        | Neha     | Bangalore | 2200         | 2023-01-07 | 5              |
+| 3        | Sneha    | Chennai   | 3000         | 2023-01-03 | 1              |
+| 8        | Vikas    | Chennai   | 3000         | 2023-01-08 | 1              |
+| 11       | Suresh   | Chennai   | 2800         | 2023-01-11 | 2              |
+| 17       | Raj      | Chennai   | 2700         | 2023-01-17 | 3              |
+| 20       | Nisha    | Chennai   | 2600         | 2023-01-20 | 4              |
+| 14       | Divya    | Chennai   | 2100         | 2023-01-14 | 5              |
+| 5        | Priya    | Chennai   | 2000         | 2023-01-05 | 6              |
+| 1        | Amit     | Chennai   | 2000         | 2023-01-01 | 6              |
+| 18       | Simran   | Hyderabad | 2000         | 2023-01-18 | 1              |
+| 15       | Karthik  | Hyderabad | 1900         | 2023-01-15 | 2              |
+| 6        | Arjun    | Hyderabad | 1800         | 2023-01-06 | 3              |
+| 9        | Anjali   | Hyderabad | 1700         | 2023-01-09 | 4              |
+| 12       | Pooja    | Hyderabad | 1600         | 2023-01-12 | 5              |
+| 2        | Ravi     | Hyderabad | 1500         | 2023-01-02 | 6              |
+
+---
+**Query #22**
+
+    -- 22. Assign dense rank to employees based on salary (lowest first)
+    SELECT *,
+    DENSE_RANK() OVER(ORDER BY salary ASC) AS dense_rank_num
+    FROM employees;
+
+| emp_id | emp_name | department | salary | join_date  | dense_rank_num |
+| ------ | -------- | ---------- | ------ | ---------- | -------------- |
+| 2      | Ravi     | Hyderabad  | 1500   | 2023-01-02 | 1              |
+| 12     | Pooja    | Hyderabad  | 1600   | 2023-01-12 | 2              |
+| 9      | Anjali   | Hyderabad  | 1700   | 2023-01-09 | 3              |
+| 6      | Arjun    | Hyderabad  | 1800   | 2023-01-06 | 4              |
+| 15     | Karthik  | Hyderabad  | 1900   | 2023-01-15 | 5              |
+| 1      | Amit     | Chennai    | 2000   | 2023-01-01 | 6              |
+| 5      | Priya    | Chennai    | 2000   | 2023-01-05 | 6              |
+| 18     | Simran   | Hyderabad  | 2000   | 2023-01-18 | 6              |
+| 14     | Divya    | Chennai    | 2100   | 2023-01-14 | 7              |
+| 7      | Neha     | Bangalore  | 2200   | 2023-01-07 | 8              |
+| 16     | Meena    | Bangalore  | 2300   | 2023-01-16 | 9              |
+| 13     | Manoj    | Bangalore  | 2400   | 2023-01-13 | 10             |
+| 4      | Kiran    | Bangalore  | 2500   | 2023-01-04 | 11             |
+| 19     | Deepak   | Bangalore  | 2500   | 2023-01-19 | 11             |
+| 20     | Nisha    | Chennai    | 2600   | 2023-01-20 | 12             |
+| 10     | Rahul    | Bangalore  | 2600   | 2023-01-10 | 12             |
+| 17     | Raj      | Chennai    | 2700   | 2023-01-17 | 13             |
+| 11     | Suresh   | Chennai    | 2800   | 2023-01-11 | 14             |
+| 8      | Vikas    | Chennai    | 3000   | 2023-01-08 | 15             |
+| 3      | Sneha    | Chennai    | 3000   | 2023-01-03 | 15             |
+
+---
+**Query #23**
+
+    -- 23. Assign dense rank within department based on joining date
+    SELECT *,
+    DENSE_RANK() OVER(PARTITION BY department ORDER BY join_date ASC) AS dense_rank_num
+    FROM employees;
+
+| emp_id | emp_name | department | salary | join_date  | dense_rank_num |
+| ------ | -------- | ---------- | ------ | ---------- | -------------- |
+| 4      | Kiran    | Bangalore  | 2500   | 2023-01-04 | 1              |
+| 7      | Neha     | Bangalore  | 2200   | 2023-01-07 | 2              |
+| 10     | Rahul    | Bangalore  | 2600   | 2023-01-10 | 3              |
+| 13     | Manoj    | Bangalore  | 2400   | 2023-01-13 | 4              |
+| 16     | Meena    | Bangalore  | 2300   | 2023-01-16 | 5              |
+| 19     | Deepak   | Bangalore  | 2500   | 2023-01-19 | 6              |
+| 1      | Amit     | Chennai    | 2000   | 2023-01-01 | 1              |
+| 3      | Sneha    | Chennai    | 3000   | 2023-01-03 | 2              |
+| 5      | Priya    | Chennai    | 2000   | 2023-01-05 | 3              |
+| 8      | Vikas    | Chennai    | 3000   | 2023-01-08 | 4              |
+| 11     | Suresh   | Chennai    | 2800   | 2023-01-11 | 5              |
+| 14     | Divya    | Chennai    | 2100   | 2023-01-14 | 6              |
+| 17     | Raj      | Chennai    | 2700   | 2023-01-17 | 7              |
+| 20     | Nisha    | Chennai    | 2600   | 2023-01-20 | 8              |
+| 2      | Ravi     | Hyderabad  | 1500   | 2023-01-02 | 1              |
+| 6      | Arjun    | Hyderabad  | 1800   | 2023-01-06 | 2              |
+| 9      | Anjali   | Hyderabad  | 1700   | 2023-01-09 | 3              |
+| 12     | Pooja    | Hyderabad  | 1600   | 2023-01-12 | 4              |
+| 15     | Karthik  | Hyderabad  | 1900   | 2023-01-15 | 5              |
+| 18     | Simran   | Hyderabad  | 2000   | 2023-01-18 | 6              |
+
+---
+**Query #24**
+
+    -- 24. Assign dense rank to orders based on order date
+    SELECT *,
+    DENSE_RANK() OVER(ORDER BY order_date ASC) AS dense_rank_num
+    FROM orders;
+
+| order_id | customer | city      | order_amount | order_date | dense_rank_num |
+| -------- | -------- | --------- | ------------ | ---------- | -------------- |
+| 1        | Amit     | Chennai   | 2000         | 2023-01-01 | 1              |
+| 2        | Ravi     | Hyderabad | 1500         | 2023-01-02 | 2              |
+| 3        | Sneha    | Chennai   | 3000         | 2023-01-03 | 3              |
+| 4        | Kiran    | Bangalore | 2500         | 2023-01-04 | 4              |
+| 5        | Priya    | Chennai   | 2000         | 2023-01-05 | 5              |
+| 6        | Arjun    | Hyderabad | 1800         | 2023-01-06 | 6              |
+| 7        | Neha     | Bangalore | 2200         | 2023-01-07 | 7              |
+| 8        | Vikas    | Chennai   | 3000         | 2023-01-08 | 8              |
+| 9        | Anjali   | Hyderabad | 1700         | 2023-01-09 | 9              |
+| 10       | Rahul    | Bangalore | 2600         | 2023-01-10 | 10             |
+| 11       | Suresh   | Chennai   | 2800         | 2023-01-11 | 11             |
+| 12       | Pooja    | Hyderabad | 1600         | 2023-01-12 | 12             |
+| 13       | Manoj    | Bangalore | 2400         | 2023-01-13 | 13             |
+| 14       | Divya    | Chennai   | 2100         | 2023-01-14 | 14             |
+| 15       | Karthik  | Hyderabad | 1900         | 2023-01-15 | 15             |
+| 16       | Meena    | Bangalore | 2300         | 2023-01-16 | 16             |
+| 17       | Raj      | Chennai   | 2700         | 2023-01-17 | 17             |
+| 18       | Simran   | Hyderabad | 2000         | 2023-01-18 | 18             |
+| 19       | Deepak   | Bangalore | 2500         | 2023-01-19 | 19             |
+| 20       | Nisha    | Chennai   | 2600         | 2023-01-20 | 20             |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/f/r8njcaHaGp6ig6na1RavpU/0)
