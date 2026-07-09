@@ -1,0 +1,240 @@
++-----------+----------+---------+--------------------+------------+------------+-----------+-----+--------+
+|customer_id|first_name|last_name|               email|phone_number|     address|       city|state|zip_code|
++-----------+----------+---------+--------------------+------------+------------+-----------+-----+--------+
+|          1|      John|    Smith|john.smith@domain...|    555-0001|  123 Elm St|Springfield|   IL|   62701|
+|          2|      Emma|    Jones|emma.jones@webmai...|    555-0002|  456 Oak St|Centerville|   OH|   45459|
+|          3|    Olivia|    Brown|olivia.brown@outl...|    555-0003| 789 Pine St| Greenville|   SC|   29601|
+|          4|      Liam|  Johnson|liam.johnson@gmai...|    555-0004|101 Maple St|  Riverside|   CA|   92501|
+|          5|      Noah| Williams|noah.williams@yah...|    555-0005|202 Birch St|   Lakeside|   TX|   75001|
++-----------+----------+---------+--------------------+------------+------------+-----------+-----+--------+
+only showing top 5 rows
+
++-------+-----------+----------+----------+--------+------------+
+|sale_id|customer_id|product_id| sale_date|quantity|total_amount|
++-------+-----------+----------+----------+--------+------------+
+|      1|          1|         1|2024-01-15|       2|       39.98|
+|      2|          1|         3|2024-01-20|       1|       29.99|
+|      3|          2|         2|2024-01-16|       1|       25.00|
+|      4|          2|         4|2024-01-22|       3|       89.97|
+|      5|          3|         5|2024-01-17|       2|       49.98|
++-------+-----------+----------+----------+--------+------------+
+only showing top 5 rows
+
+root
+ |-- customer_id: string (nullable = true)
+ |-- first_name: string (nullable = true)
+ |-- last_name: string (nullable = true)
+ |-- email: string (nullable = true)
+ |-- phone_number: string (nullable = true)
+ |-- address: string (nullable = true)
+ |-- city: string (nullable = true)
+ |-- state: string (nullable = true)
+ |-- zip_code: string (nullable = true)
+
++-----------+----------+---------+-----+------------+-------+----+-----+--------+
+|customer_id|first_name|last_name|email|phone_number|address|city|state|zip_code|
++-----------+----------+---------+-----+------------+-------+----+-----+--------+
++-----------+----------+---------+-----+------------+-------+----+-----+--------+
+
++-----------+----------+---------+-----+------------+-------+----+-----+--------+
+|customer_id|first_name|last_name|email|phone_number|address|city|state|zip_code|
++-----------+----------+---------+-----+------------+-------+----+-----+--------+
++-----------+----------+---------+-----+------------+-------+----+-----+--------+
+
++-----------+----------+---------+--------------------+------------+--------------+------------+-----+--------+
+|customer_id|first_name|last_name|               email|phone_number|       address|        city|state|zip_code|
++-----------+----------+---------+--------------------+------------+--------------+------------+-----+--------+
+|          1|      John|    Smith|john.smith@domain...|    555-0001|    123 Elm St| Springfield|   IL|   62701|
+|          2|      Emma|    Jones|emma.jones@webmai...|    555-0002|    456 Oak St| Centerville|   OH|   45459|
+|          3|    Olivia|    Brown|olivia.brown@outl...|    555-0003|   789 Pine St|  Greenville|   SC|   29601|
+|          4|      Liam|  Johnson|liam.johnson@gmai...|    555-0004|  101 Maple St|   Riverside|   CA|   92501|
+|          5|      Noah| Williams|noah.williams@yah...|    555-0005|  202 Birch St|    Lakeside|   TX|   75001|
+|          6|     Alice|   Miller|alice.miller@aol.com|    555-0006|  303 Cedar St|     Oakland|   CA|   94601|
+|          7|  Isabella|    Davis|isabella.davis@ic...|    555-0007| 404 Spruce St|       Boise|   ID|   83701|
+|          8|     James| Martinez|james.martinez@li...|    555-0008| 505 Walnut St|  Des Moines|   IA|   50301|
+|          9|    Sophia|   Garcia|sophia.garcia@zoh...|    555-0009| 606 Cherry St|      Albany|   NY|   12201|
+|         10|     Lucas|Rodriguez|lucas.rodriguez@h...|    555-0010|  707 Maple St|    Portland|   OR|   97201|
+|         11|       Mia|    Lopez|  mia.lopez@mail.com|    555-0011|    808 Oak St|       Miami|   FL|   33101|
+|         12|   William| Anderson|william.anderson@...|    555-0012|   909 Pine St|   Nashville|   TN|   37201|
+|         13|    Amelia|   Thomas|amelia.thomas@pro...|    555-0013|   1010 Elm St|      Denver|   CO|   80201|
+|         14|     Ethan|   Taylor|ethan.taylor@inbo...|    555-0014| 1111 Birch St| Minneapolis|   MN|   55401|
+|         15|    Harper|  Jackson|harper.jackson@ou...|    555-0015| 1212 Cedar St|     Seattle|   WA|   98101|
+|         16|   Jackson|    White|jackson.white@yma...|    555-0016|1313 Spruce St|     Atlanta|   GA|   30301|
+|         17| Charlotte|   Harris|charlotte.harris@...|    555-0017|1414 Walnut St|   San Diego|   CA|   92101|
+|         18|    Oliver|   Martin|oliver.martin@icl...|    555-0018|1515 Cherry St|Indianapolis|   IN|   46201|
+|         19|   Madison| Thompson|madison.thompson@...|    555-0019| 1616 Maple St|   Charlotte|   NC|   28201|
+|         20|    Elijah|   Garcia|elijah.garcia@zoh...|    555-0020|   1717 Oak St|     Detroit|   MI|   48201|
++-----------+----------+---------+--------------------+------------+--------------+------------+-----+--------+
+only showing top 20 rows
+
+root
+ |-- brand: string (nullable = true)
+ |-- category: string (nullable = true)
+ |-- description: string (nullable = true)
+ |-- discountPercentage: double (nullable = true)
+ |-- id: long (nullable = true)
+ |-- price: long (nullable = true)
+ |-- rating: double (nullable = true)
+ |-- stock: long (nullable = true)
+ |-- title: string (nullable = true)
+
++--------------------+-----------+--------------------+------------------+---+-----+------+-----+--------------------+
+|               brand|   category|         description|discountPercentage| id|price|rating|stock|               title|
++--------------------+-----------+--------------------+------------------+---+-----+------+-----+--------------------+
+|               Apple|smartphones|An apple mobile w...|             12.96|  1|  549|  4.69|   94|            iPhone 9|
+|               Apple|smartphones|SIM-Free, Model A...|             17.94|  2|  899|  4.44|   34|            iPhone X|
+|             Samsung|smartphones|Samsung's new var...|             15.46|  3| 1249|  4.09|   36|  Samsung Universe 9|
+|                OPPO|smartphones|OPPO F19 is offic...|             17.91|  4|  280|   4.3|  123|             OPPOF19|
+|              Huawei|smartphones|Huawei’s re-badge...|             10.58|  5|  499|  4.09|   32|          Huawei P30|
+|               Apple|    laptops|MacBook Pro 2021 ...|             11.02|  6| 1749|  4.57|   83|         MacBook Pro|
+|             Samsung|    laptops|Samsung Galaxy Bo...|              4.15|  7| 1499|  4.25|   50| Samsung Galaxy Book|
+|   Microsoft Surface|    laptops|Style and speed. ...|             10.23|  8| 1499|  4.43|   68|Microsoft Surface...|
+|             Infinix|    laptops|Infinix Inbook X1...|             11.83|  9| 1099|  4.54|   96|      Infinix INBOOK|
+|         HP Pavilion|    laptops|HP Pavilion 15-DK...|              6.18| 10| 1099|  4.43|   89|HP Pavilion 15-DK...|
+|Impression of Acq...| fragrances|Mega Discount, Im...|               8.4| 11|   13|  4.26|   65|         perfume Oil|
+|        Royal_Mirage| fragrances|Royal_Mirage Spor...|             15.66| 12|   40|   4.0|   52|       Brown Perfume|
+|  Fog Scent Xpressio| fragrances|Product details o...|              8.14| 13|   13|  4.59|   61|Fog Scent Xpressi...|
+|           Al Munakh| fragrances|Original Al Munak...|              15.6| 14|  120|  4.21|  114|Non-Alcoholic Con...|
+|     Lord - Al-Rehab| fragrances|Genuine  Al-Rehab...|             10.99| 15|   30|   4.7|  105|Eau De Perfume Spray|
+|       L'Oreal Paris|   skincare|L'OrÃ©al Paris in...|             13.31| 16|   19|  4.83|  110|Hyaluronic Acid S...|
+|          Hemani Tea|   skincare|Tea tree oil cont...|              4.09| 17|   12|  4.52|   78|       Tree Oil 30ml|
+|             Dermive|   skincare|Dermive Oil Free ...|              13.1| 18|   40|  4.56|   88|Oil Free Moisturi...|
+|    ROREC White Rice|   skincare|Product name: ror...|             10.68| 19|   46|  4.42|   54|  Skin Beauty Serum.|
+|        Fair & Clear|   skincare|Fair & Clear is P...|             16.99| 20|   70|  4.06|  140|Freckle Treatment...|
++--------------------+-----------+--------------------+------------------+---+-----+------+-----+--------------------+
+only showing top 20 rows
+
++-----------+--------+------+--------------------+------+----+-----+-----+----------------+-------+-----+--------+
+|PassengerId|Survived|Pclass|                Name|   Sex| Age|SibSp|Parch|          Ticket|   Fare|Cabin|Embarked|
++-----------+--------+------+--------------------+------+----+-----+-----+----------------+-------+-----+--------+
+|          1|       0|     3|Braund, Mr. Owen ...|  male|22.0|    1|    0|       A/5 21171|   7.25| NULL|       S|
+|          2|       1|     1|Cumings, Mrs. Joh...|female|38.0|    1|    0|        PC 17599|71.2833|  C85|       C|
+|          3|       1|     3|Heikkinen, Miss. ...|female|26.0|    0|    0|STON/O2. 3101282|  7.925| NULL|       S|
+|          4|       1|     1|Futrelle, Mrs. Ja...|female|35.0|    1|    0|          113803|   53.1| C123|       S|
+|          5|       0|     3|Allen, Mr. Willia...|  male|35.0|    0|    0|          373450|   8.05| NULL|       S|
+|          6|       0|     3|    Moran, Mr. James|  male|NULL|    0|    0|          330877| 8.4583| NULL|       Q|
+|          7|       0|     1|McCarthy, Mr. Tim...|  male|54.0|    0|    0|           17463|51.8625|  E46|       S|
+|          8|       0|     3|Palsson, Master. ...|  male| 2.0|    3|    1|          349909| 21.075| NULL|       S|
+|          9|       1|     3|Johnson, Mrs. Osc...|female|27.0|    0|    2|          347742|11.1333| NULL|       S|
+|         10|       1|     2|Nasser, Mrs. Nich...|female|14.0|    1|    0|          237736|30.0708| NULL|       C|
+|         11|       1|     3|Sandstrom, Miss. ...|female| 4.0|    1|    1|         PP 9549|   16.7|   G6|       S|
+|         12|       1|     1|Bonnell, Miss. El...|female|58.0|    0|    0|          113783|  26.55| C103|       S|
+|         13|       0|     3|Saundercock, Mr. ...|  male|20.0|    0|    0|       A/5. 2151|   8.05| NULL|       S|
+|         14|       0|     3|Andersson, Mr. An...|  male|39.0|    1|    5|          347082| 31.275| NULL|       S|
+|         15|       0|     3|Vestrom, Miss. Hu...|female|14.0|    0|    0|          350406| 7.8542| NULL|       S|
+|         16|       1|     2|Hewlett, Mrs. (Ma...|female|55.0|    0|    0|          248706|   16.0| NULL|       S|
+|         17|       0|     3|Rice, Master. Eugene|  male| 2.0|    4|    1|          382652| 29.125| NULL|       Q|
+|         18|       1|     2|Williams, Mr. Cha...|  male|NULL|    0|    0|          244373|   13.0| NULL|       S|
+|         19|       0|     3|Vander Planke, Mr...|female|31.0|    1|    0|          345763|   18.0| NULL|       S|
+|         20|       1|     3|Masselmani, Mrs. ...|female|NULL|    0|    0|            2649|  7.225| NULL|       C|
++-----------+--------+------+--------------------+------+----+-----+-----+----------------+-------+-----+--------+
+only showing top 20 rows
+
++----------+-----------+
+| sale_date|daily_sales|
++----------+-----------+
+|2024-01-19|      66.75|
+|2024-02-08|      49.98|
+|2024-02-28|      67.47|
+|2024-02-20|       34.0|
+|2024-03-03|       55.5|
+|2024-02-15|       45.0|
+|2024-02-12|       40.0|
+|2024-02-26|      89.96|
+|2024-02-06|      29.99|
+|2024-01-17|      49.98|
+|2024-01-18|     119.96|
+|2024-02-16|      35.98|
+|2024-02-23|      18.75|
+|2024-01-16|       25.0|
+|2024-02-19|       27.5|
+|2024-01-29|       92.0|
+|2024-02-10|       15.5|
+|2024-02-21|       92.0|
+|2024-01-15|      39.98|
+|2024-03-01|       22.5|
++----------+-----------+
+only showing top 20 rows
+
++-------------+-------------+
+|         city|total_revenue|
++-------------+-------------+
+|  Springfield|        69.97|
+|      Oakland|         40.0|
+|  San Antonio|        79.96|
+| Philadelphia|         60.0|
+| Indianapolis|        59.97|
+|    Nashville|        67.47|
+|    San Diego|         95.5|
+|San Francisco|         27.5|
+|      Detroit|        89.97|
+|       Albany|        79.96|
+|     Portland|         55.0|
+|        Boise|       110.95|
+|    St. Louis|        99.95|
+|     Columbus|        71.97|
+|      Memphis|        89.96|
+|   Washington|         92.0|
+|      El Paso|        19.99|
+|    Milwaukee|        66.75|
+|   Pittsburgh|         15.5|
+|  Centerville|       114.97|
++-------------+-------------+
+only showing top 20 rows
+
++-----------+-----------+
+|customer_id|order_count|
++-----------+-----------+
++-----------+-----------+
+
++------------+-----------+----------+-----------+----+
+|        city|customer_id|first_name|total_spend|rank|
++------------+-----------+----------+-----------+----+
+|      Albany|          9|    Sophia|      79.96|   1|
+|     Atlanta|         16|   Jackson|       60.0|   1|
+|   Baltimore|         36|     Mason|      18.75|   1|
+|       Boise|          7|  Isabella|     110.95|   1|
+|      Boston|         22|     Henry|     119.96|   1|
+| Centerville|          2|      Emma|     114.97|   1|
+|   Charlotte|         37|     Avery|      39.98|   1|
+|     Chicago|         43|      Lily|       40.0|   1|
+|    Columbus|         30|     David|      71.97|   1|
+|      Denver|         40|  Benjamin|       40.0|   1|
+|  Des Moines|          8|     James|       20.0|   1|
+|     Detroit|         20|    Elijah|      89.97|   1|
+|     El Paso|         38|     Logan|      19.99|   1|
+|  Greenville|          3|    Olivia|      49.98|   1|
+|    Honolulu|         25|    Harper|       40.0|   1|
+|     Houston|         42|    Elijah|       22.5|   1|
+|Indianapolis|         18|    Oliver|      59.97|   1|
+|     Jackson|         33|     Grace|       34.0|   1|
+|Jacksonville|         21|  Scarlett|      49.98|   1|
+|    Lakeside|          5|      Noah|      66.75|   1|
++------------+-----------+----------+-----------+----+
+only showing top 20 rows
+
++-----------+----------+------------+-----------+-----------+
+|customer_id|first_name|        city|total_spend|order_count|
++-----------+----------+------------+-----------+-----------+
+|         17| Charlotte|   San Diego|       40.0|          1|
+|         31|     Chloe|    San Jose|       50.0|          1|
+|         12|   William|   Nashville|      67.47|          1|
+|         19|   Madison|   Charlotte|      29.99|          1|
+|          8|     James|  Des Moines|       20.0|          1|
+|         24|    Daniel|   St. Louis|      99.95|          1|
+|         28|       Leo|   Las Vegas|       45.0|          1|
+|          2|      Emma| Centerville|     114.97|          2|
+|         35|    Harper|Philadelphia|       60.0|          1|
+|         38|     Logan|     El Paso|      19.99|          1|
+|         36|     Mason|   Baltimore|      18.75|          1|
+|         33|     Grace|     Jackson|       34.0|          1|
+|          4|      Liam|   Riverside|     135.46|          2|
+|          6|     Alice|     Oakland|       40.0|          1|
+|         16|   Jackson|     Atlanta|       60.0|          1|
+|         30|     David|    Columbus|      71.97|          1|
+|         40|  Benjamin|      Denver|       40.0|          1|
+|         46|   Michael|     Seattle|      12.99|          1|
+|         39|      Aria|     Memphis|      89.96|          1|
+|         45| Charlotte|    New York|     109.96|          1|
++-----------+----------+------------+-----------+-----------+
+only showing top 20 rows
