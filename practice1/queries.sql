@@ -103,6 +103,26 @@ limit 4;
 select *from Employees 
 order by salary desc limit 1;
 
+#26.DISTINCT
+#Display distinct department names.
+SELECT DISTINCT department
+FROM Employees;
+
+#27.Display distinct city names.
+SELECT DISTINCT city
+FROM Employees;
+
+#28.Display distinct salary values.
+SELECT DISTINCT salary
+FROM Employees;
+
+#29.Display distinct combinations of department and city.
+SELECT DISTINCT department, city
+FROM Employees;
+
+#30.Display distinct experience values.
+SELECT DISTINCT experience
+FROM Employees;
 
 
 
