@@ -416,5 +416,536 @@
 | 114    | Kavya    | IT         | 97000  | Hyderabad | 9          |
 
 ---
+**Query #26**
+
+    #26.DISTINCT
+    #Display distinct department names.
+    SELECT DISTINCT department
+    FROM Employees;
+
+| department |
+| ---------- |
+| IT         |
+| HR         |
+| Finance    |
+| Sales      |
+
+---
+**Query #27**
+
+    #27.Display distinct city names.
+    SELECT DISTINCT city
+    FROM Employees;
+
+| city      |
+| --------- |
+| Hyderabad |
+| Chennai   |
+| Bangalore |
+| Pune      |
+| Mumbai    |
+
+---
+**Query #28**
+
+    #28.Display distinct salary values.
+    SELECT DISTINCT salary
+    FROM Employees;
+
+| salary |
+| ------ |
+| 75000  |
+| 45000  |
+| 82000  |
+| 67000  |
+| 39000  |
+| 91000  |
+| 55000  |
+| 48000  |
+| 61000  |
+| 73000  |
+| 52000  |
+| 88000  |
+| 46000  |
+| 97000  |
+| 58000  |
+
+---
+**Query #29**
+
+    #29.Display distinct combinations of department and city.
+    SELECT DISTINCT department, city
+    FROM Employees;
+
+| department | city      |
+| ---------- | --------- |
+| IT         | Hyderabad |
+| HR         | Chennai   |
+| IT         | Bangalore |
+| Finance    | Hyderabad |
+| HR         | Pune      |
+| Finance    | Mumbai    |
+| IT         | Chennai   |
+| Sales      | Bangalore |
+| Sales      | Hyderabad |
+| IT         | Mumbai    |
+| Finance    | Bangalore |
+| Sales      | Chennai   |
+
+---
+**Query #30**
+
+    #30.Display distinct experience values.
+    SELECT DISTINCT experience
+    FROM Employees;
+
+| experience |
+| ---------- |
+| 5          |
+| 3          |
+| 6          |
+| 4          |
+| 2          |
+| 8          |
+| 7          |
+| 9          |
+
+---
+**Query #31**
+
+    #COMPARISON OPERATORS
+    #31.Find employees with salary >= 80000.
+    SELECT *
+    FROM Employees
+    WHERE salary >= 80000;
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 103    | Kiran    | IT         | 82000  | Bangalore | 6          |
+| 106    | Ravi     | Finance    | 91000  | Mumbai    | 8          |
+| 112    | Nisha    | Finance    | 88000  | Bangalore | 7          |
+| 114    | Kavya    | IT         | 97000  | Hyderabad | 9          |
+
+---
+**Query #32**
+
+    #32.Find employees with experience <= 3.
+    SELECT *
+    FROM Employees
+    WHERE experience <= 3;
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 102    | Anjali   | HR         | 45000  | Chennai   | 3          |
+| 105    | Aman     | HR         | 39000  | Pune      | 2          |
+| 107    | Divya    | IT         | 55000  | Chennai   | 3          |
+| 108    | Meena    | Sales      | 48000  | Bangalore | 2          |
+| 111    | Vikas    | HR         | 52000  | Pune      | 3          |
+| 113    | Tarun    | Sales      | 46000  | Chennai   | 2          |
+
+---
+**Query #33**
+
+    #33.Find employees whose salary <> 45000 (not equal to 45000).
+    SELECT *
+    FROM Employees
+    WHERE salary <> 45000;
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 101    | Rahul    | IT         | 75000  | Hyderabad | 5          |
+| 103    | Kiran    | IT         | 82000  | Bangalore | 6          |
+| 104    | Sneha    | Finance    | 67000  | Hyderabad | 4          |
+| 105    | Aman     | HR         | 39000  | Pune      | 2          |
+| 106    | Ravi     | Finance    | 91000  | Mumbai    | 8          |
+| 107    | Divya    | IT         | 55000  | Chennai   | 3          |
+| 108    | Meena    | Sales      | 48000  | Bangalore | 2          |
+| 109    | Arjun    | Sales      | 61000  | Hyderabad | 5          |
+| 110    | Pooja    | IT         | 73000  | Mumbai    | 4          |
+| 111    | Vikas    | HR         | 52000  | Pune      | 3          |
+| 112    | Nisha    | Finance    | 88000  | Bangalore | 7          |
+| 113    | Tarun    | Sales      | 46000  | Chennai   | 2          |
+| 114    | Kavya    | IT         | 97000  | Hyderabad | 9          |
+| 115    | Manoj    | Finance    | 58000  | Mumbai    | 4          |
+
+---
+**Query #34**
+
+    #34.Find employees with salary < 50000.
+    SELECT *
+    FROM Employees
+    WHERE salary < 50000;
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 102    | Anjali   | HR         | 45000  | Chennai   | 3          |
+| 105    | Aman     | HR         | 39000  | Pune      | 2          |
+| 108    | Meena    | Sales      | 48000  | Bangalore | 2          |
+| 113    | Tarun    | Sales      | 46000  | Chennai   | 2          |
+
+---
+**Query #35**
+
+    #35.Find employees with experience > 5.
+    SELECT *
+    FROM Employees
+    WHERE experience > 5;
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 103    | Kiran    | IT         | 82000  | Bangalore | 6          |
+| 106    | Ravi     | Finance    | 91000  | Mumbai    | 8          |
+| 112    | Nisha    | Finance    | 88000  | Bangalore | 7          |
+| 114    | Kavya    | IT         | 97000  | Hyderabad | 9          |
+
+---
+**Query #36**
+
+    #LOGICAL OPERATORS
+    #36.Find employees from IT department AND salary greater than 70000.
+    SELECT *
+    FROM Employees
+    WHERE department = 'IT'
+    AND salary > 70000;
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 101    | Rahul    | IT         | 75000  | Hyderabad | 5          |
+| 103    | Kiran    | IT         | 82000  | Bangalore | 6          |
+| 110    | Pooja    | IT         | 73000  | Mumbai    | 4          |
+| 114    | Kavya    | IT         | 97000  | Hyderabad | 9          |
+
+---
+**Query #37**
+
+    #37.Find employees from Hyderabad OR Bangalore.
+    SELECT *
+    FROM Employees
+    WHERE city = 'Hyderabad'
+    OR city = 'Bangalore';
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 101    | Rahul    | IT         | 75000  | Hyderabad | 5          |
+| 103    | Kiran    | IT         | 82000  | Bangalore | 6          |
+| 104    | Sneha    | Finance    | 67000  | Hyderabad | 4          |
+| 108    | Meena    | Sales      | 48000  | Bangalore | 2          |
+| 109    | Arjun    | Sales      | 61000  | Hyderabad | 5          |
+| 112    | Nisha    | Finance    | 88000  | Bangalore | 7          |
+| 114    | Kavya    | IT         | 97000  | Hyderabad | 9          |
+
+---
+**Query #38**
+
+    #38.Find employees from HR department AND experience less than 3.
+    SELECT *
+    FROM Employees
+    WHERE department = 'HR'
+    AND experience < 3;
+
+| emp_id | emp_name | department | salary | city | experience |
+| ------ | -------- | ---------- | ------ | ---- | ---------- |
+| 105    | Aman     | HR         | 39000  | Pune | 2          |
+
+---
+**Query #39**
+
+    #39.Find employees with salary greater than 60000 OR experience greater than 6.
+    SELECT *
+    FROM Employees
+    WHERE salary > 60000
+    OR experience > 6;
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 101    | Rahul    | IT         | 75000  | Hyderabad | 5          |
+| 103    | Kiran    | IT         | 82000  | Bangalore | 6          |
+| 104    | Sneha    | Finance    | 67000  | Hyderabad | 4          |
+| 106    | Ravi     | Finance    | 91000  | Mumbai    | 8          |
+| 109    | Arjun    | Sales      | 61000  | Hyderabad | 5          |
+| 110    | Pooja    | IT         | 73000  | Mumbai    | 4          |
+| 112    | Nisha    | Finance    | 88000  | Bangalore | 7          |
+| 114    | Kavya    | IT         | 97000  | Hyderabad | 9          |
+
+---
+**Query #40**
+
+    #40.Find employees NOT from Sales department.
+    SELECT *
+    FROM Employees
+    WHERE NOT department = 'Sales';
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 101    | Rahul    | IT         | 75000  | Hyderabad | 5          |
+| 102    | Anjali   | HR         | 45000  | Chennai   | 3          |
+| 103    | Kiran    | IT         | 82000  | Bangalore | 6          |
+| 104    | Sneha    | Finance    | 67000  | Hyderabad | 4          |
+| 105    | Aman     | HR         | 39000  | Pune      | 2          |
+| 106    | Ravi     | Finance    | 91000  | Mumbai    | 8          |
+| 107    | Divya    | IT         | 55000  | Chennai   | 3          |
+| 110    | Pooja    | IT         | 73000  | Mumbai    | 4          |
+| 111    | Vikas    | HR         | 52000  | Pune      | 3          |
+| 112    | Nisha    | Finance    | 88000  | Bangalore | 7          |
+| 114    | Kavya    | IT         | 97000  | Hyderabad | 9          |
+| 115    | Manoj    | Finance    | 58000  | Mumbai    | 4          |
+
+---
+**Query #41**
+
+    #IN AND NOT IN
+    #41.Find employees working in ('Hyderabad', 'Mumbai').
+    SELECT *
+    FROM Employees
+    WHERE city IN ('Hyderabad', 'Mumbai');
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 101    | Rahul    | IT         | 75000  | Hyderabad | 5          |
+| 104    | Sneha    | Finance    | 67000  | Hyderabad | 4          |
+| 106    | Ravi     | Finance    | 91000  | Mumbai    | 8          |
+| 109    | Arjun    | Sales      | 61000  | Hyderabad | 5          |
+| 110    | Pooja    | IT         | 73000  | Mumbai    | 4          |
+| 114    | Kavya    | IT         | 97000  | Hyderabad | 9          |
+| 115    | Manoj    | Finance    | 58000  | Mumbai    | 4          |
+
+---
+**Query #42**
+
+    #42.Find employees whose department IN ('IT', 'Finance').
+    SELECT *
+    FROM Employees
+    WHERE department IN ('IT', 'Finance');
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 101    | Rahul    | IT         | 75000  | Hyderabad | 5          |
+| 103    | Kiran    | IT         | 82000  | Bangalore | 6          |
+| 104    | Sneha    | Finance    | 67000  | Hyderabad | 4          |
+| 106    | Ravi     | Finance    | 91000  | Mumbai    | 8          |
+| 107    | Divya    | IT         | 55000  | Chennai   | 3          |
+| 110    | Pooja    | IT         | 73000  | Mumbai    | 4          |
+| 112    | Nisha    | Finance    | 88000  | Bangalore | 7          |
+| 114    | Kavya    | IT         | 97000  | Hyderabad | 9          |
+| 115    | Manoj    | Finance    | 58000  | Mumbai    | 4          |
+
+---
+**Query #43**
+
+    #43.Find employees whose city NOT IN ('Chennai', 'Pune').
+    SELECT *
+    FROM Employees
+    WHERE city NOT IN ('Chennai', 'Pune');
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 101    | Rahul    | IT         | 75000  | Hyderabad | 5          |
+| 103    | Kiran    | IT         | 82000  | Bangalore | 6          |
+| 104    | Sneha    | Finance    | 67000  | Hyderabad | 4          |
+| 106    | Ravi     | Finance    | 91000  | Mumbai    | 8          |
+| 108    | Meena    | Sales      | 48000  | Bangalore | 2          |
+| 109    | Arjun    | Sales      | 61000  | Hyderabad | 5          |
+| 110    | Pooja    | IT         | 73000  | Mumbai    | 4          |
+| 112    | Nisha    | Finance    | 88000  | Bangalore | 7          |
+| 114    | Kavya    | IT         | 97000  | Hyderabad | 9          |
+| 115    | Manoj    | Finance    | 58000  | Mumbai    | 4          |
+
+---
+**Query #44**
+
+    #44.Find employees whose salary IN (45000, 75000, 91000).
+    SELECT *
+    FROM Employees
+    WHERE salary IN (45000, 75000, 91000);
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 101    | Rahul    | IT         | 75000  | Hyderabad | 5          |
+| 102    | Anjali   | HR         | 45000  | Chennai   | 3          |
+| 106    | Ravi     | Finance    | 91000  | Mumbai    | 8          |
+
+---
+**Query #45**
+
+    #45.Find employees whose department NOT IN ('HR', 'Sales').
+    SELECT *
+    FROM Employees
+    WHERE department NOT IN ('HR', 'Sales');
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 101    | Rahul    | IT         | 75000  | Hyderabad | 5          |
+| 103    | Kiran    | IT         | 82000  | Bangalore | 6          |
+| 104    | Sneha    | Finance    | 67000  | Hyderabad | 4          |
+| 106    | Ravi     | Finance    | 91000  | Mumbai    | 8          |
+| 107    | Divya    | IT         | 55000  | Chennai   | 3          |
+| 110    | Pooja    | IT         | 73000  | Mumbai    | 4          |
+| 112    | Nisha    | Finance    | 88000  | Bangalore | 7          |
+| 114    | Kavya    | IT         | 97000  | Hyderabad | 9          |
+| 115    | Manoj    | Finance    | 58000  | Mumbai    | 4          |
+
+---
+**Query #46**
+
+    #BETWEEN
+    #46.Find employees with salary BETWEEN 50000 AND 80000.
+    SELECT *
+    FROM Employees
+    WHERE salary BETWEEN 50000 AND 80000;
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 101    | Rahul    | IT         | 75000  | Hyderabad | 5          |
+| 104    | Sneha    | Finance    | 67000  | Hyderabad | 4          |
+| 107    | Divya    | IT         | 55000  | Chennai   | 3          |
+| 109    | Arjun    | Sales      | 61000  | Hyderabad | 5          |
+| 110    | Pooja    | IT         | 73000  | Mumbai    | 4          |
+| 111    | Vikas    | HR         | 52000  | Pune      | 3          |
+| 115    | Manoj    | Finance    | 58000  | Mumbai    | 4          |
+
+---
+**Query #47**
+
+    #47.Find employees with experience BETWEEN 3 AND 6.
+    SELECT *
+    FROM Employees
+    WHERE experience BETWEEN 3 AND 6;
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 101    | Rahul    | IT         | 75000  | Hyderabad | 5          |
+| 102    | Anjali   | HR         | 45000  | Chennai   | 3          |
+| 103    | Kiran    | IT         | 82000  | Bangalore | 6          |
+| 104    | Sneha    | Finance    | 67000  | Hyderabad | 4          |
+| 107    | Divya    | IT         | 55000  | Chennai   | 3          |
+| 109    | Arjun    | Sales      | 61000  | Hyderabad | 5          |
+| 110    | Pooja    | IT         | 73000  | Mumbai    | 4          |
+| 111    | Vikas    | HR         | 52000  | Pune      | 3          |
+| 115    | Manoj    | Finance    | 58000  | Mumbai    | 4          |
+
+---
+**Query #48**
+
+    #48.Find employees whose emp_id BETWEEN 105 AND 112.
+    SELECT *
+    FROM Employees
+    WHERE emp_id BETWEEN 105 AND 112;
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 105    | Aman     | HR         | 39000  | Pune      | 2          |
+| 106    | Ravi     | Finance    | 91000  | Mumbai    | 8          |
+| 107    | Divya    | IT         | 55000  | Chennai   | 3          |
+| 108    | Meena    | Sales      | 48000  | Bangalore | 2          |
+| 109    | Arjun    | Sales      | 61000  | Hyderabad | 5          |
+| 110    | Pooja    | IT         | 73000  | Mumbai    | 4          |
+| 111    | Vikas    | HR         | 52000  | Pune      | 3          |
+| 112    | Nisha    | Finance    | 88000  | Bangalore | 7          |
+
+---
+**Query #49**
+
+    #49.Find employees with salary NOT BETWEEN 40000 AND 60000.
+    SELECT *
+    FROM Employees
+    WHERE salary NOT BETWEEN 40000 AND 60000;
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 101    | Rahul    | IT         | 75000  | Hyderabad | 5          |
+| 103    | Kiran    | IT         | 82000  | Bangalore | 6          |
+| 104    | Sneha    | Finance    | 67000  | Hyderabad | 4          |
+| 105    | Aman     | HR         | 39000  | Pune      | 2          |
+| 106    | Ravi     | Finance    | 91000  | Mumbai    | 8          |
+| 109    | Arjun    | Sales      | 61000  | Hyderabad | 5          |
+| 110    | Pooja    | IT         | 73000  | Mumbai    | 4          |
+| 112    | Nisha    | Finance    | 88000  | Bangalore | 7          |
+| 114    | Kavya    | IT         | 97000  | Hyderabad | 9          |
+
+---
+**Query #50**
+
+    #50.Find employees with experience BETWEEN 2 AND 4.
+    SELECT *
+    FROM Employees
+    WHERE experience BETWEEN 2 AND 4;
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 102    | Anjali   | HR         | 45000  | Chennai   | 3          |
+| 104    | Sneha    | Finance    | 67000  | Hyderabad | 4          |
+| 105    | Aman     | HR         | 39000  | Pune      | 2          |
+| 107    | Divya    | IT         | 55000  | Chennai   | 3          |
+| 108    | Meena    | Sales      | 48000  | Bangalore | 2          |
+| 110    | Pooja    | IT         | 73000  | Mumbai    | 4          |
+| 111    | Vikas    | HR         | 52000  | Pune      | 3          |
+| 113    | Tarun    | Sales      | 46000  | Chennai   | 2          |
+| 115    | Manoj    | Finance    | 58000  | Mumbai    | 4          |
+
+---
+**Query #51**
+
+    #LIKE OPERATOR
+    #Find employees whose names start with 'R'.
+    select *from Employees where emp_name like 'R%';
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 101    | Rahul    | IT         | 75000  | Hyderabad | 5          |
+| 106    | Ravi     | Finance    | 91000  | Mumbai    | 8          |
+
+---
+**Query #52**
+
+    #Find employees whose names end with 'a'.
+    select *from Employees where emp_name like '%a';
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 104    | Sneha    | Finance    | 67000  | Hyderabad | 4          |
+| 107    | Divya    | IT         | 55000  | Chennai   | 3          |
+| 108    | Meena    | Sales      | 48000  | Bangalore | 2          |
+| 110    | Pooja    | IT         | 73000  | Mumbai    | 4          |
+| 112    | Nisha    | Finance    | 88000  | Bangalore | 7          |
+| 114    | Kavya    | IT         | 97000  | Hyderabad | 9          |
+
+---
+**Query #53**
+
+    #Find employees whose names contain 'v'.
+    select *from Employees where emp_name like '%v%';
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 106    | Ravi     | Finance    | 91000  | Mumbai    | 8          |
+| 107    | Divya    | IT         | 55000  | Chennai   | 3          |
+| 111    | Vikas    | HR         | 52000  | Pune      | 3          |
+| 114    | Kavya    | IT         | 97000  | Hyderabad | 9          |
+
+---
+**Query #54**
+
+    #Find employees whose city starts with 'B'.
+    select *from Employees where city like 'B%';
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 103    | Kiran    | IT         | 82000  | Bangalore | 6          |
+| 108    | Meena    | Sales      | 48000  | Bangalore | 2          |
+| 112    | Nisha    | Finance    | 88000  | Bangalore | 7          |
+
+---
+**Query #55**
+
+    #Find employees whose department ends with 's'.
+    select *from Employees where department like '%s';
+
+| emp_id | emp_name | department | salary | city      | experience |
+| ------ | -------- | ---------- | ------ | --------- | ---------- |
+| 108    | Meena    | Sales      | 48000  | Bangalore | 2          |
+| 109    | Arjun    | Sales      | 61000  | Hyderabad | 5          |
+| 113    | Tarun    | Sales      | 46000  | Chennai   | 2          |
+
+---
 
 [View on DB Fiddle](https://www.db-fiddle.com/)
